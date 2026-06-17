@@ -140,8 +140,11 @@ function sM(l){
 function sLsn(l,mi,li){
   let ms=gM(l);
   let m=ms[mi],les=m.lessons[li];
+  let prev=li>0?'<button class="btn" onclick="sLsn(\''+l+'\','+mi+','+(li-1)+')" style="margin-left:8px">⬅ السابق</button>':'';
+  let next=li<m.lessons.length-1?'<button class="btn" onclick="sLsn(\''+l+'\','+mi+','+(li+1)+')">التالي ➡</button>':'';
   let h='<div class="ls-sc"><div class="ls-h"><div class="br">'+m.icon+' '+m.title+' — درس '+(li+1)+' من '+m.lessons.length+'</div><h2>'+les.title+'</h2></div>'+
-    '<div class="ls-b"><div class="bk" onclick="sM(\''+l+'\')">⬅ الرجوع</div><div class="ls-c">'+les.body+'</div></div></div>';
+    '<div class="ls-b"><div class="bk" onclick="sM(\''+l+'\')">⬅ الرجوع للموديول</div><div class="ls-c">'+les.body+'</div>'+
+    '<div style="margin-top:24px;padding-top:20px;border-top:2px solid #ede0d4">'+prev+next+'</div></div></div>';
   $('ls').innerHTML=h;
   $('ls').scrollIntoView({behavior:'smooth'});
 }
