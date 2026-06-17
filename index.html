@@ -42,6 +42,70 @@
         .stagger > *:nth-child(4) { animation-delay:0.35s; }
         .stagger > *:nth-child(5) { animation-delay:0.45s; }
 
+        /* ===== Level Select ===== */
+        .level-select {
+            padding: 20px 0;
+            animation: fadeInUp 0.6s ease;
+        }
+        .level-select h2 {
+            font-family:'Playfair Display',serif; color:var(--coffee-700);
+            text-align:center; font-size:1.6rem; margin-bottom:4px;
+        }
+        .level-select .subtitle {
+            text-align:center; color:var(--coffee-500); margin-bottom:24px;
+            font-size:0.95rem;
+        }
+        .level-grid {
+            display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+            gap:16px; margin-bottom:24px;
+        }
+        .level-card {
+            background:white; border-radius:var(--radius-lg); overflow:hidden;
+            cursor:pointer; transition:0.4s cubic-bezier(0.4,0,0.2,1);
+            border:2px solid var(--cream); position:relative;
+        }
+        .level-card:hover { transform:translateY(-6px); box-shadow:0 12px 40px rgba(0,0,0,0.1); }
+        .level-card .level-head {
+            padding:24px; text-align:center;
+            background: linear-gradient(135deg, var(--coffee-900), var(--coffee-700));
+            position:relative; overflow:hidden;
+        }
+        .level-card .level-head .level-icon { font-size:3rem; position:relative; z-index:1; }
+        .level-card .level-head h3 {
+            font-family:'Playfair Display',serif; color:var(--gold);
+            font-size:1.5rem; margin-top:8px; position:relative; z-index:1;
+        }
+        .level-card .level-head .level-badge {
+            display:inline-block; background:rgba(212,168,90,0.2);
+            color:var(--gold); padding:4px 16px; border-radius:20px;
+            font-size:0.8rem; margin-top:4px; position:relative; z-index:1;
+        }
+        .level-card .level-body { padding:20px; }
+        .level-card .level-body p { color:var(--coffee-500); font-size:0.9rem; margin-bottom:12px; }
+        .level-card .level-stats {
+            display:flex; justify-content:space-around; text-align:center;
+            padding-top:12px; border-top:1px solid var(--cream);
+        }
+        .level-card .level-stats .stat-num { font-weight:900; color:var(--coffee-700); font-size:1.1rem; }
+        .level-card .level-stats .stat-label { font-size:0.78rem; color:var(--coffee-400); }
+        .level-card .level-progress {
+            height:4px; background:var(--cream); width:100%;
+        }
+        .level-card .level-progress .fill {
+            height:100%; background:linear-gradient(90deg, var(--gold), var(--gold-light));
+            transition:width 1s ease; width:0%;
+        }
+        .level-card .go-btn {
+            display:block; width:100%; padding:12px; border:none;
+            background:linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color:var(--coffee-900); font-family:inherit; font-weight:700; font-size:1rem;
+            cursor:pointer; transition:0.3s;
+        }
+        .level-card .go-btn:hover { filter:brightness(1.1); }
+        .level-card .go-btn .locked {
+            background:var(--cream); color:var(--coffee-400); cursor:not-allowed;
+        }
+
         /* ===== Auth ===== */
         .auth-screen {
             display:flex; align-items:center; justify-content:center;
@@ -477,11 +541,10 @@
         <h1>Esenza Academy</h1>
         <div class="subtitle">تدريب الباريستا — <span>من البداية للاحتراف</span></div>
         <div class="error" id="authError"></div>
-        <input type="text" id="authName" placeholder="الاسم بالكامل" style="display:none;">
         <input type="text" id="authUser" placeholder="اسم المستخدم" autocomplete="off">
         <input type="password" id="authPass" placeholder="كلمة المرور">
         <button class="btn-gold" id="authBtn" onclick="handleAuth()">تسجيل الدخول</button>
-        <div class="switch" id="authSwitch" onclick="toggleAuthMode()">ما عنديش حساب؟ سجل جديد</div>
+        <div class="switch" id="authSwitch" onclick="showAdminHint()" style="font-size:0.75rem;color:var(--coffee-300);">🔐 دخول المشرف</div>
         <div class="ref-footer">
             بالتعاون مع
             <a href="https://sca.coffee" target="_blank">SCA</a> ·
@@ -492,10 +555,52 @@
     </div>
 </div>
 
+<!-- ==================== LEVEL SELECT ==================== -->
+<div id="levelScreen" style="display:none;">
+    <div class="container level-select">
+        <h2>🎯 اختر مستواك</h2>
+        <div class="subtitle">ابدأ رحلتك في عالم القهوة من حيث أنت</div>
+        <div class="level-grid" id="levelGrid"></div>
+    </div>
+</div>
+
+<!-- ==================== ADMIN PANEL ==================== -->
+<div id="adminScreen" style="display:none;">
+    <div class="container level-select">
+        <h2>🔐 لوحة المشرف</h2>
+        <div class="subtitle" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;">
+            <span>إدارة الطلاب — أضف أو احذف الطلاب</span>
+            <span id="adminLevelBadge" style="font-size:0.8rem;background:rgba(212,168,90,0.2);padding:4px 12px;border-radius:6px;color:var(--gold);">admin</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;">
+            <div style="background:white;border-radius:var(--radius-lg);padding:24px;">
+                <h3 style="color:var(--coffee-700);margin-bottom:16px;font-size:1.1rem;">➕ إضافة طالب جديد</h3>
+                <input type="text" id="newStudentName" placeholder="الاسم الكامل" style="width:100%;padding:10px 14px;margin-bottom:10px;border:2px solid var(--cream);border-radius:8px;font-family:inherit;font-size:0.95rem;">
+                <input type="text" id="newStudentUser" placeholder="اسم المستخدم" style="width:100%;padding:10px 14px;margin-bottom:10px;border:2px solid var(--cream);border-radius:8px;font-family:inherit;font-size:0.95rem;">
+                <input type="text" id="newStudentPass" placeholder="كلمة المرور" style="width:100%;padding:10px 14px;margin-bottom:10px;border:2px solid var(--cream);border-radius:8px;font-family:inherit;font-size:0.95rem;">
+                <button class="go-btn" onclick="addStudent()" style="border-radius:8px;">➕ إضافة طالب</button>
+            </div>
+            <div style="background:white;border-radius:var(--radius-lg);padding:24px;max-height:400px;overflow-y:auto;">
+                <div style="margin-bottom:12px;padding:12px;background:var(--foam);border-radius:8px;">
+                <h4 style="color:var(--coffee-700);font-size:0.95rem;margin-bottom:8px;">🔑 تغيير كلمة مرور المشرف</h4>
+                <input type="text" id="newAdminPass" placeholder="كلمة المرور الجديدة" style="width:100%;padding:8px 12px;margin-bottom:6px;border:2px solid var(--cream);border-radius:6px;font-family:inherit;font-size:0.9rem;">
+                <button class="go-btn" onclick="changeAdminPass()" style="font-size:0.85rem;padding:8px;border-radius:6px;">تحديث</button>
+            </div>
+            <h3 style="color:var(--coffee-700);margin-bottom:16px;font-size:1.1rem;">📋 قائمة الطلاب</h3>
+                <div id="studentList"></div>
+            </div>
+        </div>
+        <div style="text-align:center;margin-top:16px;">
+            <button class="go-btn" onclick="goToLevelsFromAdmin()" style="display:inline-block;width:auto;padding:12px 32px;margin:0 auto;border-radius:8px;">☕ دخول كطالب — تجربة المنهج</button>
+            <button onclick="logout()" style="display:inline-block;width:auto;padding:12px 32px;margin:8px;border:2px solid var(--gold);border-radius:8px;background:transparent;color:var(--gold);font-family:inherit;font-weight:700;cursor:pointer;font-size:1rem;">تسجيل الخروج</button>
+        </div>
+    </div>
+</div>
+
 <!-- ==================== MAIN APP ==================== -->
 <div id="appScreen" style="display:none;">
     <div class="app-header">
-        <div class="brand">
+        <div class="brand" onclick="showLevelSelect()" style="cursor:pointer;">
             <svg width="28" height="28" viewBox="0 0 100 100">
                 <circle cx="50" cy="50" r="45" fill="#EDE0D4" stroke="#D4A85A" stroke-width="2"/>
                 <path d="M30 60 Q35 35 50 30 Q65 35 70 60" fill="none" stroke="#6D4C41" stroke-width="3" stroke-linecap="round"/>
@@ -504,6 +609,7 @@
             Esenza Academy
         </div>
         <div class="user-info">
+            <span id="currentLevelBadge" style="font-size:0.8rem;background:rgba(212,168,90,0.2);padding:4px 12px;border-radius:6px;color:var(--gold);"></span>
             <span id="userDisplay"></span>
             <button class="logout-btn" onclick="logout()">تسجيل الخروج</button>
         </div>
@@ -565,8 +671,8 @@
                 <p style="font-size:1.1rem;color:var(--coffee-500);">يشهد بأن</p>
                 <div class="name" id="certName"></div>
                 <p style="font-size:1rem;color:var(--coffee-500);">قد أتم بنجاح دورة</p>
-                <p style="font-size:1.3rem;font-weight:700;color:var(--coffee-700);margin:8px 0;">تدريب الباريستا المعتمد</p>
-                <div class="date" id="certDate"></div>
+                <p style="font-size:1.3rem;font-weight:700;color:var(--coffee-700);margin:8px 0;" id="certLevelName">تدريب الباريستا المعتمد</p>
+                <div class="date" id="certDate" style="margin-top:4px;"></div>
                 <p style="margin-top:20px;font-size:0.85rem;color:var(--coffee-300);">
                     هذا الكورس معتمد على معايير<br>
                     SCA — Specialty Coffee Association
@@ -585,24 +691,42 @@
 
 <script src="academic-content.js"></script>
 <script>
-// ==================== Course Data ====================
+// ==================== Course & Level Data ====================
 const COURSE = window.COURSE;
+
+const LEVELS = {
+  A: { id:'A', title:'مبتدئ', icon:'🌱', emoji:'☕', color:'#27AE60', desc:'اكتشاف القهوة وأصولها — للمبتدئين', full:'المستوى التمهيدي — من الصفر إلى أول فنجان احترافي' },
+  B: { id:'B', title:'محترف', icon:'🔥', emoji:'🌰', color:'#E67E22', desc:'أسرار التحميص والاستخلاص المتقدم', full:'المستوى المتوسط — التحميص، الاستخلاص، مصادر البن' },
+  C: { id:'C', title:'ماستر', icon:'👑', emoji:'🔬', color:'#8E44AD', desc:'التقييم الحسي والإدارة والابتكار', full:'المستوى المتقدم — كابينج، إدارة مقهى، مستقبل القهوة' },
+};
+
+function getLevelOfModule(modId) {
+  return modId.replace('module-','').charAt(0);
+}
+
+function getModulesForLevel(level) {
+  return COURSE.filter(m => getLevelOfModule(m.id) === level);
+}
 
 // ==================== Database ====================
 const DB_NAME = 'lucca_academy_db';
 const DB_VER = 2;
 
 class AcademyDB {
-    constructor() { this.db = null; }
+    constructor() { this.db = null; this._initPromise = null; }
     async init() {
-        return new Promise((resolve, reject) => {
+        if (this.db) return;
+        if (this._initPromise) return this._initPromise;
+        this._initPromise = new Promise((resolve, reject) => {
             const req = indexedDB.open(DB_NAME, DB_VER);
-            req.onerror = () => reject(req.error);
+            req.onerror = () => { this._initPromise = null; reject(req.error); };
             req.onsuccess = () => { this.db = req.result; resolve(); };
             req.onupgradeneeded = (e) => {
                 const d = e.target.result;
-                if (!d.objectStoreNames.contains('users'))
-                    d.createObjectStore('users', { keyPath: 'username' });
+    if (!d.objectStoreNames.contains('users'))
+        d.createObjectStore('users', { keyPath: 'username' });
+    if (!d.objectStoreNames.contains('settings'))
+        d.createObjectStore('settings', { keyPath: 'key' });
                 if (!d.objectStoreNames.contains('progress')) {
                     const ps = d.createObjectStore('progress', { keyPath: 'id', autoIncrement: true });
                     ps.createIndex('username', 'username', { unique: false });
@@ -668,43 +792,110 @@ function showToast(msg) {
     clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove('show'), 2000);
 }
 
-// ==================== Auth ====================
-function toggleAuthMode() {
-    isRegisterMode = !isRegisterMode;
-    const nameEl = document.getElementById('authName');
-    nameEl.style.display = isRegisterMode ? 'block' : 'none';
-    document.getElementById('authBtn').textContent = isRegisterMode ? 'تسجيل جديد' : 'تسجيل الدخول';
-    document.getElementById('authSwitch').textContent = isRegisterMode ? 'عندي حساب؟ دخول' : 'ما عنديش حساب؟ سجل جديد';
-    document.getElementById('authError').style.display = 'none';
+// ==================== Admin Config ====================
+const ADMIN_USER = 'admin';
+const ADMIN_NAME = 'المدير';
+
+async function getAdminPass() {
+    const s = await ldb.get('settings', 'admin_pass');
+    return s ? s.value : 'esenza2024';
 }
+
+async function seedAdmin() {
+    const existing = await ldb.get('users', ADMIN_USER);
+    if (!existing) {
+        const pass = await getAdminPass();
+        await ldb.put('users', { username: ADMIN_USER, password: pass, name: ADMIN_NAME, role: 'admin', joined: new Date().toISOString() });
+    }
+}
+
+// Login attempt lockout
+const loginAttempts = {};
 
 async function handleAuth() {
     const user = document.getElementById('authUser').value.trim();
     const pass = document.getElementById('authPass').value.trim();
-    const name = document.getElementById('authName').value.trim();
+    const errorEl = document.getElementById('authError');
+
+    // Lockout check
+    const attempts = loginAttempts[user] || 0;
+    if (attempts >= 5) {
+        errorEl.textContent = '⏳ تم تجاوز الحد المسموح. انتظر دقيقة وحاول مجدداً.';
+        errorEl.style.display = 'block';
+        return;
+    }
+
+    if (!user || !pass) { errorEl.textContent = '⚠️ أدخل اسم المستخدم وكلمة المرور'; errorEl.style.display = 'block'; return; }
+
+    try {
+        await ldb.init();
+        await seedAdmin();
+        const u = await ldb.get('users', user);
+        if (!u || u.password !== pass) {
+            loginAttempts[user] = (loginAttempts[user] || 0) + 1;
+            if (loginAttempts[user] >= 5) {
+                errorEl.textContent = '⏳ تم تجاوز الحد المسموح. انتظر دقيقة.';
+                setTimeout(() => { delete loginAttempts[user]; }, 60000);
+            } else {
+                errorEl.textContent = '⚠️ اسم المستخدم أو كلمة المرور خطأ (' + loginAttempts[user] + '/5)';
+            }
+            errorEl.style.display = 'block';
+            return;
+        }
+        delete loginAttempts[user];
+        currentUser = { username: u.username, name: u.name, role: u.role || 'student' };
+        errorEl.style.display = 'none';
+        document.getElementById('authScreen').style.display = 'none';
+        currentLevel = null;
+        startInactivityTimer();
+        if (currentUser.role === 'admin') {
+            await showAdminPanel();
+        } else {
+            await showLevelSelect();
+        }
+    } catch(e) {
+        errorEl.textContent = '⚠️ خطأ: ' + e.message;
+        errorEl.style.display = 'block';
+    }
+}
+
+// ==================== Auth ====================
+// ==================== Inactivity Timer ====================
+let inactivityTimer = null;
+
+function resetInactivityTimer() {
+    if (inactivityTimer) clearTimeout(inactivityTimer);
+    if (currentUser) inactivityTimer = setTimeout(() => { showToast('⏰ خروج تلقائي بسبب عدم النشاط'); logout(); }, 1800000);
+}
+
+function startInactivityTimer() {
+    ['click','keydown','mousemove','touchstart','scroll'].forEach(e => document.addEventListener(e, resetInactivityTimer, {passive:true}));
+    resetInactivityTimer();
+}
+
+function showAdminHint() {
+    showToast('💡 المشرف: admin / esenza2024');
+}
+    const user = document.getElementById('authUser').value.trim();
+    const pass = document.getElementById('authPass').value.trim();
     const errorEl = document.getElementById('authError');
 
     if (!user || !pass) { errorEl.textContent = '⚠️ أدخل اسم المستخدم وكلمة المرور'; errorEl.style.display = 'block'; return; }
 
     try {
         await ldb.init();
-        if (isRegisterMode) {
-            if (!name) { errorEl.textContent = '⚠️ أدخل اسمك بالكامل'; errorEl.style.display = 'block'; return; }
-            const existing = await ldb.get('users', user);
-            if (existing) { errorEl.textContent = '⚠️ اسم المستخدم موجود'; errorEl.style.display = 'block'; return; }
-            await ldb.put('users', { username: user, password: pass, name, joined: new Date().toISOString() });
-            currentUser = { username: user, name };
-            showToast('✅ تم التسجيل بنجاح');
-        } else {
-            const u = await ldb.get('users', user);
-            if (!u || u.password !== pass) { errorEl.textContent = '⚠️ اسم المستخدم أو كلمة المرور خطأ'; errorEl.style.display = 'block'; return; }
-            currentUser = { username: u.username, name: u.name };
-        }
+        await seedAdmin();
+        const u = await ldb.get('users', user);
+        if (!u || u.password !== pass) { errorEl.textContent = '⚠️ اسم المستخدم أو كلمة المرور خطأ'; errorEl.style.display = 'block'; return; }
+        currentUser = { username: u.username, name: u.name, role: u.role || 'student' };
         errorEl.style.display = 'none';
         document.getElementById('authScreen').style.display = 'none';
-        document.getElementById('appScreen').style.display = 'block';
-        document.getElementById('appScreen').style.animation = 'fadeIn 0.5s ease';
-        await loadDashboard();
+        currentLevel = null;
+        if (currentUser.role === 'admin') {
+            await showAdminPanel();
+        } else {
+            await showLevelSelect();
+        }
     } catch(e) {
         errorEl.textContent = '⚠️ خطأ: ' + e.message;
         errorEl.style.display = 'block';
@@ -713,11 +904,142 @@ async function handleAuth() {
 
 function logout() {
     currentUser = null;
+    currentLevel = null;
     document.getElementById('authScreen').style.display = 'flex';
     document.getElementById('appScreen').style.display = 'none';
+    document.getElementById('levelScreen').style.display = 'none';
+    document.getElementById('adminScreen').style.display = 'none';
     document.getElementById('authUser').value = '';
     document.getElementById('authPass').value = '';
     document.getElementById('authName').value = '';
+}
+
+// ==================== Admin Panel ====================
+async function showAdminPanel() {
+    document.getElementById('authScreen').style.display = 'none';
+    document.getElementById('levelScreen').style.display = 'none';
+    document.getElementById('appScreen').style.display = 'none';
+    document.getElementById('adminScreen').style.display = 'block';
+    await renderStudentList();
+}
+
+async function renderStudentList() {
+    const all = await ldb.getAll('users');
+    const students = all.filter(u => u.username !== ADMIN_USER);
+    const el = document.getElementById('studentList');
+    if (students.length === 0) {
+        el.innerHTML = '<p style="color:var(--coffee-400);font-size:0.9rem;text-align:center;padding:20px;">لا يوجد طلاب بعد</p>';
+        return;
+    }
+    el.innerHTML = students.map(s => `
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--cream);">
+            <div><strong style="color:var(--coffee-700);">${s.name}</strong><br><span style="font-size:0.8rem;color:var(--coffee-400);">@${s.username}</span></div>
+            <button onclick="deleteStudent('${s.username}')" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:1.2rem;padding:4px 8px;">🗑️</button>
+        </div>
+    `).join('');
+}
+
+async function changeAdminPass() {
+    const newPass = document.getElementById('newAdminPass').value.trim();
+    if (!newPass || newPass.length < 4) { showToast('⚠️ كلمة المرور يجب أن تكون 4 أحرف على الأقل'); return; }
+    await ldb.put('settings', { key: 'admin_pass', value: newPass });
+    const u = await ldb.get('users', ADMIN_USER);
+    u.password = newPass;
+    await ldb.put('users', u);
+    document.getElementById('newAdminPass').value = '';
+    showToast('✅ تم تغيير كلمة مرور المشرف');
+}
+
+async function addStudent() {
+    const name = document.getElementById('newStudentName').value.trim();
+    const user = document.getElementById('newStudentUser').value.trim();
+    const pass = document.getElementById('newStudentPass').value.trim();
+    if (!name || !user || !pass) { showToast('⚠️ املأ جميع الحقول'); return; }
+    if (user === ADMIN_USER) { showToast('⚠️ هذا الاسم للمشرف'); return; }
+    const existing = await ldb.get('users', user);
+    if (existing) { showToast('⚠️ اسم المستخدم موجود'); return; }
+    await ldb.put('users', { username: user, password: pass, name, role: 'student', joined: new Date().toISOString() });
+    document.getElementById('newStudentName').value = '';
+    document.getElementById('newStudentUser').value = '';
+    document.getElementById('newStudentPass').value = '';
+    showToast('✅ تم إضافة ' + name);
+    await renderStudentList();
+}
+
+async function deleteStudent(username) {
+    if (!confirm('تأكيد حذف ' + username + '؟')) return;
+    await ldb.deleteByIndex('progress', 'username', username);
+    await ldb.deleteByIndex('quiz', 'username', username);
+    const t = ldb.db.transaction('users', 'readwrite');
+    t.objectStore('users').delete(username);
+    await new Promise(r => { t.oncomplete = r; });
+    showToast('🗑️ تم حذف الطالب');
+    await renderStudentList();
+}
+
+function goToLevelsFromAdmin() {
+    document.getElementById('adminScreen').style.display = 'none';
+    document.getElementById('currentLevelBadge').textContent = '👤 طالب';
+    showLevelSelect();
+}
+// ==================== Level Select ====================
+let currentLevel = null;
+
+async function showLevelSelect() {
+  currentLevel = null;
+  document.getElementById('authScreen').style.display = 'none';
+  document.getElementById('appScreen').style.display = 'none';
+  document.getElementById('levelScreen').style.display = 'block';
+
+  allProgress = await ldb.getAllByIndex('progress', 'username', currentUser.username);
+  allQuiz = await ldb.getAllByIndex('quiz', 'username', currentUser.username);
+
+  const grid = document.getElementById('levelGrid');
+  let html = '';
+  ['A','B','C'].forEach(lid => {
+    const lvl = LEVELS[lid];
+    const mods = getModulesForLevel(lid);
+    const totalLessons = mods.reduce((s,m) => s + m.lessons.length, 0);
+    const totalMods = mods.length;
+
+    const completedLessonIds = allProgress.filter(p => p.completed).map(p => p.lessonId);
+    const doneLessons = mods.reduce((s,m) => {
+      return s + m.lessons.filter((_,li) => completedLessonIds.includes(m.id + '-' + li)).length;
+    }, 0);
+
+    const doneMods = mods.filter(m => m.lessons.every((_,li) => completedLessonIds.includes(m.id + '-' + li))).length;
+    const pct = totalLessons > 0 ? Math.round(doneLessons/totalLessons*100) : 0;
+
+    html += `<div class="level-card">
+      <div class="level-head">
+        <div class="level-icon">${lvl.icon}</div>
+        <h3>${lvl.title}</h3>
+        <div class="level-badge">${lvl.desc}</div>
+      </div>
+      <div class="level-body">
+        <p>${lvl.full}</p>
+        <div class="level-progress"><div class="fill" style="width:${pct}%"></div></div>
+        <div class="level-stats">
+          <div><div class="stat-num">${totalMods}</div><div class="stat-label">موديولات</div></div>
+          <div><div class="stat-num">${totalLessons}</div><div class="stat-label">دروس</div></div>
+          <div><div class="stat-num">${pct}%</div><div class="stat-label">تقدم</div></div>
+          <div><div class="stat-num">${doneMods}</div><div class="stat-label">موديولات 🏆</div></div>
+        </div>
+      </div>
+      <button class="go-btn" onclick="enterLevel('${lid}')">${lvl.emoji} ابدأ المستوى ${lvl.title}</button>
+    </div>`;
+  });
+  grid.innerHTML = html;
+}
+
+async function enterLevel(lid) {
+  currentLevel = lid;
+  document.getElementById('levelScreen').style.display = 'none';
+  document.getElementById('appScreen').style.display = 'block';
+  document.getElementById('appScreen').style.animation = 'fadeIn 0.5s ease';
+  const lvl = LEVELS[lid];
+  document.getElementById('currentLevelBadge').textContent = lvl.icon + ' ' + lvl.title;
+  await loadDashboard();
 }
 
 // Confetti effect
@@ -752,7 +1074,8 @@ async function loadDashboard() {
     allProgress = await ldb.getAllByIndex('progress', 'username', currentUser.username);
     allQuiz = await ldb.getAllByIndex('quiz', 'username', currentUser.username);
 
-    const totalLessons = COURSE.reduce((s, m) => s + m.lessons.length, 0);
+    const levelMods = currentLevel ? getModulesForLevel(currentLevel) : COURSE;
+    const totalLessons = levelMods.reduce((s, m) => s + m.lessons.length, 0);
     const completedIds = allProgress.filter(p => p.completed).map(p => p.lessonId);
     const completedCount = new Set(completedIds).size;
     const pct = totalLessons > 0 ? Math.round(completedCount / totalLessons * 100) : 0;
@@ -766,7 +1089,7 @@ async function loadDashboard() {
     let html = '';
     let overallCompleted = true;
 
-    COURSE.forEach((mod, mi) => {
+    levelMods.forEach((mod, mi) => {
         const modProgress = allProgress.filter(p => p.moduleId === mod.id);
         const modDone = mod.lessons.every((_, li) => modProgress.some(p => p.lessonId === `${mod.id}-${li}` && p.completed));
         const quizPassed = allQuiz.some(q => q.moduleId === mod.id && q.passed);
@@ -810,11 +1133,11 @@ async function loadDashboard() {
     document.getElementById('modulesList').innerHTML = html;
 
     if (overallCompleted && totalLessons > 0) {
-        const allQuizPassed = COURSE.every(m => allQuiz.some(q => q.moduleId === m.id && q.passed));
+        const allQuizPassed = levelMods.every(m => allQuiz.some(q => q.moduleId === m.id && q.passed));
         if (allQuizPassed) {
             document.getElementById('modulesList').insertAdjacentHTML('beforeend',
                 `<div class="cert-cta">
-                    <button onclick="showCertificate()">🎓 استلام الشهادة</button>
+                    <button onclick="showCertificate()">🎓 استلام شهادة ${LEVELS[currentLevel]?.title || ''}</button>
                 </div>`);
         } else {
             document.getElementById('modulesList').insertAdjacentHTML('beforeend',
@@ -837,7 +1160,8 @@ const lessonBgImages = [
 ];
 
 function openLesson(modIdx, lesIdx) {
-    const mod = COURSE[modIdx];
+    const mods = (currentLevel ? getModulesForLevel(currentLevel) : COURSE);
+    const mod = mods[modIdx];
     const les = mod.lessons[lesIdx];
     const el = document.getElementById('lessonContent');
 
@@ -882,7 +1206,8 @@ function openLesson(modIdx, lesIdx) {
 }
 
 async function completeLesson(modIdx, lesIdx) {
-    const mod = COURSE[modIdx];
+    const mods = (currentLevel ? getModulesForLevel(currentLevel) : COURSE);
+    const mod = mods[modIdx];
     const lesId = `${mod.id}-${lesIdx}`;
     if (allProgress.some(p => p.lessonId === lesId && p.completed)) return;
     try {
@@ -906,7 +1231,8 @@ function backToDashboard() { loadDashboard(); window.scrollTo(0,0); }
 
 // ==================== Quiz ====================
 function openQuiz(modIdx) {
-    const mod = COURSE[modIdx];
+    const mods = (currentLevel ? getModulesForLevel(currentLevel) : COURSE);
+    const mod = mods[modIdx];
     if (!mod.quiz) { showToast('⚠️ لا يوجد اختبار لهذا الموديول'); return; }
 
     const quizPassed = allQuiz.some(q => q.moduleId === mod.id && q.passed);
@@ -964,7 +1290,8 @@ function selectQuizOption(modIdx, qi, oi) {
 }
 
 async function submitQuiz(modIdx) {
-    const mod = COURSE[modIdx];
+    const mods = (currentLevel ? getModulesForLevel(currentLevel) : COURSE);
+    const mod = mods[modIdx];
     let correct = 0;
 
     mod.quiz.forEach((q, qi) => {
@@ -1012,6 +1339,8 @@ function showCertificate() {
     document.getElementById('lessonView').style.display = 'none';
     document.getElementById('certView').style.display = 'block';
     document.getElementById('certName').textContent = currentUser.name;
+    const lvl = currentLevel ? LEVELS[currentLevel] : null;
+    document.getElementById('certLevelName').textContent = lvl ? lvl.icon + ' ' + lvl.title : 'تدريب الباريستا';
     document.getElementById('certDate').textContent = new Date().toLocaleDateString('ar-EG', { year:'numeric', month:'long', day:'numeric' });
     fireConfetti();
 }
@@ -1019,6 +1348,8 @@ function showCertificate() {
 function printCert() {
     const name = currentUser.name;
     const date = new Date().toLocaleDateString('ar-EG', { year:'numeric', month:'long', day:'numeric' });
+    const lvl = currentLevel ? LEVELS[currentLevel] : null;
+    const lvlName = lvl ? lvl.icon + ' ' + lvl.title : 'تدريب الباريستا';
     const win = window.open('', '_blank', 'width=600,height=800');
     win.document.write(`
         <html dir="rtl"><head><meta charset="utf-8">
@@ -1038,7 +1369,7 @@ function printCert() {
             <p style="font-size:1.1rem;color:#6D4C41;">يشهد بأن</p>
             <div class="name">${name}</div>
             <p style="font-size:1rem;color:#6D4C41;">قد أتم بنجاح دورة</p>
-            <p style="font-size:1.3rem;font-weight:700;color:#3E2312;margin:8px 0;">تدريب الباريستا المعتمد</p>
+            <p style="font-size:1.3rem;font-weight:700;color:#3E2312;margin:8px 0;">${lvlName}</p>
             <div class="date">${date}</div>
             <p style="margin-top:20px;font-size:0.85rem;color:#A67B5B;">هذا الكورس معتمد على معايير SCA — Specialty Coffee Association</p>
         </div>
