@@ -876,31 +876,6 @@ function startInactivityTimer() {
 function showAdminHint() {
     showToast('💡 المشرف: admin / esenza2024');
 }
-    const user = document.getElementById('authUser').value.trim();
-    const pass = document.getElementById('authPass').value.trim();
-    const errorEl = document.getElementById('authError');
-
-    if (!user || !pass) { errorEl.textContent = '⚠️ أدخل اسم المستخدم وكلمة المرور'; errorEl.style.display = 'block'; return; }
-
-    try {
-        await ldb.init();
-        await seedAdmin();
-        const u = await ldb.get('users', user);
-        if (!u || u.password !== pass) { errorEl.textContent = '⚠️ اسم المستخدم أو كلمة المرور خطأ'; errorEl.style.display = 'block'; return; }
-        currentUser = { username: u.username, name: u.name, role: u.role || 'student' };
-        errorEl.style.display = 'none';
-        document.getElementById('authScreen').style.display = 'none';
-        currentLevel = null;
-        if (currentUser.role === 'admin') {
-            await showAdminPanel();
-        } else {
-            await showLevelSelect();
-        }
-    } catch(e) {
-        errorEl.textContent = '⚠️ خطأ: ' + e.message;
-        errorEl.style.display = 'block';
-    }
-}
 
 function logout() {
     currentUser = null;
