@@ -119,44 +119,53 @@ hdr p{color:#a67b5b;position:relative}
 .ex .eq .eo.c{border-color:#27ae60;background:#e8f5e9}
 .ex .eq .eo.w{border-color:#e74c3c;background:#fde8e8}
 /* ===== Certificate ===== */
-.cert{max-width:720px;margin:0 auto;background:white;border-radius:16px;overflow:hidden;box-shadow:0 8px 60px rgba(0,0,0,.15);position:relative;animation:fi .6s ease}
-.cert::before{content:'';position:absolute;inset:8px;border:2px solid #d4a85a;border-radius:12px;pointer-events:none;z-index:1}
-.cert::after{content:'';position:absolute;inset:14px;border:1px solid rgba(212,168,90,.3);border-radius:8px;pointer-events:none;z-index:1}
-.cert .ci{padding:44px 36px;text-align:center;position:relative;z-index:2}
-.cert .ci .cf{font-size:1.5rem;margin-bottom:12px;display:flex;justify-content:center;gap:8px;animation:fi .8s ease}
-.cert .ci .cf span{display:inline-block;animation:fl 3s ease-in-out infinite}
-.cert .ci .cf span:nth-child(2){animation-delay:.3s}
-.cert .ci .cf span:nth-child(3){animation-delay:.6s}
-.cert .ci .cf span:nth-child(4){animation-delay:.9s}
-.cert .ci .cf span:nth-child(5){animation-delay:1.2s}
-.cert .ci .cb{width:70px;height:70px;margin:0 auto 12px;background:linear-gradient(135deg,#d4a85a,#b8922e);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2rem;box-shadow:0 4px 20px rgba(212,168,90,.3);animation:pp 2s ease-in-out infinite}
-.cert .ci .an{font-size:1.3rem;font-weight:900;color:#3e2312;letter-spacing:1px}
-.cert .ci .sub{color:#a67b5b;font-size:.85rem;margin-bottom:16px}
-.cert .ci .cd{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:16px}
-.cert .ci .cd .cdl{flex:1;max-width:120px;height:1px;background:linear-gradient(90deg,transparent,#d4a85a)}
-.cert .ci .cd .cdd{color:#d4a85a;font-size:1rem}
-.cert .ci .cd .cdr{flex:1;max-width:120px;height:1px;background:linear-gradient(90deg,#d4a85a,transparent)}
-.cert .ci .certh{font-size:1.5rem;font-weight:900;color:#1a0f0a;margin-bottom:4px;font-family:Georgia,serif}
-.cert .ci .certh span{color:#d4a85a}
-.cert .ci .cthis{color:#6d4c41;font-size:.95rem;margin-bottom:12px;line-height:1.8}
-.cert .ci .cname{font-size:2.2rem;font-weight:900;color:#1a0f0a;margin:8px 0;font-family:Georgia,serif;position:relative;display:inline-block}
-.cert .ci .cname::after{content:'';display:block;width:60%;height:2px;margin:4px auto 0;background:linear-gradient(90deg,transparent,#d4a85a,transparent)}
-.cert .ci .clevel{display:inline-block;background:linear-gradient(135deg,#ede0d4,#f5ebe0);padding:6px 24px;border-radius:20px;font-weight:700;color:#3e2312;margin:6px 0;font-size:1rem;border:1px solid #d4a85a}
-.cert .ci .csb{height:8px;background:#ede0d4;border-radius:4px;margin:12px auto;overflow:hidden;max-width:300px}
-.cert .ci .csb .csf{height:100%;background:linear-gradient(90deg,#d4a85a,#e8cc8a);border-radius:4px;transition:width 1s ease;animation:fw 1.2s ease forwards}
-.cert .ci .cscore{color:#6d4c41;margin:4px 0;font-size:.9rem}
+.cert{max-width:720px;margin:0 auto;background:white;border-radius:4px;overflow:hidden;box-shadow:0 12px 80px rgba(0,0,0,.2);position:relative;padding:10px}
+.cert .ci{background:linear-gradient(135deg,#fcf9f5,#f8f0e6);padding:48px 40px 40px;text-align:center;position:relative;z-index:2;border:3px double #d4a85a;border-radius:4px;box-shadow:inset 0 0 0 1px rgba(212,168,90,.2)}
+.cert .ci::before{content:'☕';position:absolute;top:10px;left:20px;font-size:2rem;opacity:.08;transform:rotate(-15deg)}
+.cert .ci::after{content:'☕';position:absolute;bottom:10px;right:20px;font-size:2rem;opacity:.08;transform:rotate(15deg)}
+.cert .ci .corner{position:absolute;width:30px;height:30px;border-color:#d4a85a;border-style:solid}
+.cert .ci .corner-tl{top:16px;right:16px;border-width:3px 3px 0 0}
+.cert .ci .corner-tr{top:16px;left:16px;border-width:3px 0 0 3px}
+.cert .ci .corner-bl{bottom:16px;right:16px;border-width:0 3px 3px 0}
+.cert .ci .corner-br{bottom:16px;left:16px;border-width:0 0 3px 3px}
+.cert .ci .c-icon{width:56px;height:56px;margin:0 auto 10px;position:relative}
+.cert .ci .c-icon .outer{position:absolute;inset:0;border-radius:50%;border:2px solid #d4a85a;animation:pp 3s ease-in-out infinite}
+.cert .ci .c-icon .outer::after{content:'';position:absolute;inset:-6px;border-radius:50%;border:1px solid rgba(212,168,90,.2)}
+.cert .ci .c-icon .inner{position:absolute;inset:6px;border-radius:50%;background:linear-gradient(135deg,#d4a85a,#b8922e);display:flex;align-items:center;justify-content:center;font-size:1.3rem;color:white;box-shadow:0 2px 10px rgba(212,168,90,.3)}
+.cert .ci .cx{border:0;padding:0;margin:0;font-size:0;height:0}
+.cert .ci .ctop{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:4px}
+.cert .ci .ctop::before,.cert .ci .ctop::after{content:'';flex:1;max-width:80px;height:1px;background:linear-gradient(90deg,transparent,#d4a85a)}
+.cert .ci .ctop::after{background:linear-gradient(90deg,#d4a85a,transparent)}
+.cert .ci .ctop span{color:#d4a85a;font-size:.8rem;letter-spacing:3px;text-transform:uppercase}
+.cert .ci .an{font-size:1.2rem;font-weight:900;color:#3e2312;letter-spacing:2px;font-family:Georgia,serif}
+.cert .ci .sub{color:#a67b5b;font-size:.8rem;margin-bottom:6px;display:flex;align-items:center;justify-content:center;gap:8px}
+.cert .ci .sub::before,.cert .ci .sub::after{content:'•';color:#d4a85a;font-size:.6rem}
+.cert .ci .certh{margin:8px 0 4px;position:relative}
+.cert .ci .certh .h-gold{display:inline-block;background:linear-gradient(135deg,#d4a85a,#b8922e);color:white;padding:6px 36px;border-radius:4px;font-size:1.1rem;font-weight:700;letter-spacing:2px;box-shadow:0 2px 8px rgba(212,168,90,.3)}
+.cert .ci .cname-wrap{margin:14px 0;position:relative;padding:6px 0}
+.cert .ci .cname-wrap::before{content:'—';position:absolute;top:-2px;left:50%;transform:translateX(-50%);color:#d4a85a;font-size:.8rem}
+.cert .ci .cname-wrap::after{content:'—';position:absolute;bottom:-2px;left:50%;transform:translateX(-50%);color:#d4a85a;font-size:.8rem}
+.cert .ci .cname{font-size:2rem;font-weight:900;color:#1a0f0a;font-family:Georgia,serif;letter-spacing:1px;line-height:1.2}
+.cert .ci .cbody{color:#6d4c41;font-size:.9rem;line-height:1.8;max-width:400px;margin:0 auto 10px}
+.cert .ci .cbody strong{color:#3e2312}
+.cert .ci .clevel{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#fff8e1,#fff);padding:5px 18px;border-radius:3px;font-weight:600;color:#3e2312;margin:4px 0 10px;font-size:.85rem;border:1px solid #d4a85a;letter-spacing:.5px}
+.cert .ci .clevel .lv-icon{font-size:1.2rem}
+.cert .ci .cscore{margin:4px 0;font-size:.85rem;color:#6d4c41}
 .cert .ci .cscore strong{color:#3e2312}
-.cert .ci .cft{display:flex;align-items:center;justify-content:center;gap:24px;margin-top:20px;padding-top:16px;border-top:1px solid #ede0d4}
-.cert .ci .cft .cdate{color:#a67b5b;font-size:.8rem}
-.cert .ci .cft .cs{width:60px;height:60px;border-radius:50%;border:3px solid #d4a85a;display:flex;align-items:center;justify-content:center;font-size:1.8rem;background:linear-gradient(135deg,#fff8e1,#fff);box-shadow:0 2px 12px rgba(212,168,90,.2);animation:pp 3s ease-in-out infinite}
-.cert .ci .csig{display:flex;align-items:center;justify-content:center;gap:24px;margin:16px 0 12px;padding:12px 0;border-top:1px solid #ede0d4;border-bottom:1px solid #ede0d4}
-.cert .ci .csig .csig-box{display:flex;flex-direction:column;align-items:center;gap:4px}
-.cert .ci .csig .csig-line{width:140px;height:1px;border-top:2px solid #3e2312;margin-bottom:2px}
-.cert .ci .csig .csig-label{font-size:.7rem;color:#a67b5b}
-.cert .ci .csig .cstamp{width:70px;height:70px;border-radius:50%;border:3px double #d4a85a;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#fff8e1,#fff);font-size:.5rem;color:#3e2312;text-align:center;line-height:1.3;font-weight:700;flex-shrink:0;position:relative}
-.cert .ci .csig .cstamp::after{content:'';position:absolute;inset:-6px;border:2px solid rgba(212,168,90,.3);border-radius:50%}
-.cert .ci .csig .cstamp .cstamp-in{font-size:.5rem}
-.cert .ci .cm{color:#c4b5a5;font-size:.65rem;margin-top:16px;letter-spacing:1px}
+.cert .ci .csb{height:5px;background:#ede0d4;border-radius:3px;margin:6px auto 4px;overflow:hidden;max-width:280px}
+.cert .ci .csb .csf{height:100%;background:linear-gradient(90deg,#d4a85a,#e8cc8a);border-radius:3px;transition:width 1s ease}
+.cert .ci .csig{display:flex;align-items:flex-end;justify-content:center;gap:32px;margin:14px 0 6px;padding:12px 0 0;position:relative}
+.cert .ci .csig .csig-box{display:flex;flex-direction:column;align-items:center;gap:2px;flex:1;max-width:180px}
+.cert .ci .csig .csig-line{width:100%;height:1px;border-top:2px solid #3e2312;margin-bottom:2px}
+.cert .ci .csig .csig-label{font-size:.65rem;color:#a67b5b}
+.cert .ci .csig .cstamp-box{flex:0 0 auto;max-width:100px}
+.cert .ci .csig .cstamp{width:72px;height:72px;border-radius:50%;border:3px double #d4a85a;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#fff8e1,#fff);box-shadow:0 0 0 4px white,0 0 0 5px rgba(212,168,90,.3);position:relative;margin-top:-20px}
+.cert .ci .csig .cstamp .cstamp-in{font-size:.5rem;color:#3e2312;text-align:center;line-height:1.2;font-weight:700}
+.cert .ci .cft{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:10px;padding-top:10px;border-top:1px solid #ede0d4}
+.cert .ci .cft .cdate{color:#a67b5b;font-size:.72rem;display:flex;align-items:center;gap:4px}
+.cert .ci .cft .csep{color:#d4a85a;font-size:.5rem}
+.cert .ci .cm{color:#c4b5a5;font-size:.6rem;margin-top:12px;letter-spacing:1px;display:flex;align-items:center;justify-content:center;gap:6px}
+.cert .ci .cm span{opacity:.5}
 .cnt{background:white;border-radius:16px;padding:24px;box-shadow:0 2px 12px rgba(0,0,0,.04)}
 .cnt .cci{display:flex;align-items:center;gap:16px;padding:14px;border:2px solid #ede0d4;border-radius:12px;margin-bottom:12px;transition:.3s;cursor:pointer}
 .cnt .cci:hover{border-color:#d4a85a;background:#faf5ef}
@@ -206,7 +215,8 @@ hdr p{color:#a67b5b;position:relative}
 .ln{transition:.3s}
 hdr{animation:sd .5s ease}
 .cert .cf span{animation:fl 3s ease-in-out infinite}
-@media(max-width:600px){.c{padding:12px}.lc .hd{min-height:110px}.lc .hd .ic{font-size:2.2rem}.mc .mh{flex-direction:column}.mc .msd{width:100%;min-height:60px;flex-direction:row;padding:8px}.mc .msd .mnm{display:none}.ls-sc .ls-b{padding:20px}.ls-sc .ls-h .hc{padding:24px 20px;min-height:140px}.ls-sc .ls-h .hc h2{font-size:1.2rem}.ls-c .img-row{grid-template-columns:1fr}.ex{padding:16px}.ex .eq{padding:14px}.cert .ci{padding:24px 16px}.cert .ci .cname{font-size:1.5rem}}
+@media(max-width:600px){.c{padding:12px}.lc .hd{min-height:110px}.lc .hd .ic{font-size:2.2rem}.mc .mh{flex-direction:column}.mc .msd{width:100%;min-height:60px;flex-direction:row;padding:8px}.mc .msd .mnm{display:none}.ls-sc .ls-b{padding:20px}.ls-sc .ls-h .hc{padding:24px 20px;min-height:140px}.ls-sc .ls-h .hc h2{font-size:1.2rem}.ls-c .img-row{grid-template-columns:1fr}.ex{padding:16px}.ex .eq{padding:14px}.cert{padding:6px}.cert .ci{padding:28px 16px 24px}.cert .ci .cname{font-size:1.5rem}.cert .ci .ctop span{font-size:.6rem;letter-spacing:1px}.cert .ci .c-icon{width:40px;height:40px}.cert .ci .c-icon .inner{font-size:1rem}.cert .ci .an{font-size:1rem}.cert .ci .certh .h-gold{font-size:.9rem;padding:4px 20px}.cert .ci .csig{gap:16px}.cert .ci .csig .csig-line{width:80px}.cert .ci .csig .cstamp{width:56px;height:56px;margin-top:-12px}.cert .ci .csig .cstamp .cstamp-in{font-size:.4rem}}
+@media print{body{background:white}hdr,.tbs,.btn,.tb,.ap,.nav-b,.lg,.sf,.ex .btn{display:none!important}.c{max-width:100%;padding:0}.cert{box-shadow:none;padding:0;margin:20px auto}.cert .ci{padding:40px 36px;page-break-inside:avoid}.cert .ci .c-icon .outer{animation:none}.cert .ci .cstamp{animation:none}.cert .ci .c-icon .inner{animation:none}}
 @media print{body{background:white!important}hdr,.tbs,.t{display:none!important}.c{max-width:100%;padding:0}.cert{border:4px double #d4a85a!important;box-shadow:none!important;animation:none!important}.cert .ci .cs{animation:none!important}.cert .ci .btn{display:none!important}}
 </style>
 </head>
@@ -552,22 +562,22 @@ function gCert(l,n,p){
   let lv=LV[l];
   let d=new Date();
   let ds=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
-  let sn='ESZ-'+lv.id+'-'+d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0')+'-'+String(Math.floor(Math.random()*1000)).padStart(3,'0');
+  let sn='ESZ-'+lv.id+'-'+d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0')+'-'+String(Math.floor(Math.random()*9999)).padStart(4,'0');
   return '<div class="cert" id="cert"><div class="ci">'+
-    '<div class="cf"><span>🇪🇹</span><span>🇧🇷</span><span>🇨🇴</span><span>🇪🇹</span><span>🌍</span></div>'+
-    '<div class="cb">☕</div>'+
+    '<div class="corner corner-tl"></div><div class="corner corner-tr"></div><div class="corner corner-bl"></div><div class="corner corner-br"></div>'+
+    '<div class="c-icon"><div class="outer"></div><div class="inner">☕</div></div>'+
+    '<div class="ctop"><span>E S E N Z A &nbsp; A C A D E M Y</span></div>'+
     '<div class="an">Esenza Academy</div><div class="sub">تدريب الباريستا الاحترافي</div>'+
-    '<div class="cd"><span class="cdl"></span><span class="cdd">✦</span><span class="cdr"></span></div>'+
-    '<div class="certh"><span>شهادة إتمام</span></div>'+
-    '<div class="cthis">نشهد بأن</div>'+
-    '<div class="cname">'+n+'</div>'+
-    '<div class="cthis">قد أتم بنجاح المستوى <strong>'+lv.t+'</strong><br>في برنامج تدريب الباريستا الاحترافي</div>'+
-    '<div class="clevel">'+lv.ic+' المستوى '+lv.id+' — '+lv.t+'</div>'+
+    '<div class="certh"><div class="h-gold">شهادة إتمام</div></div>'+
+    '<div class="cbody">نشهد بأن</div>'+
+    '<div class="cname-wrap"><div class="cname">'+n+'</div></div>'+
+    '<div class="cbody">قد أتم بنجاح المستوى <strong>'+lv.t+'</strong><br>في برنامج تدريب الباريستا الاحترافي</div>'+
+    '<div class="clevel"><span class="lv-icon">'+lv.ic+'</span> المستوى '+lv.id+' — '+lv.t+'</div>'+
+    '<div class="cscore"><strong>'+p+'%</strong> — '+Math.round(p/100*10)+'/10 صحيح</div>'+
     '<div class="csb"><div class="csf" style="width:'+p+'%"></div></div>'+
-    '<div class="cscore">الدرجة: <strong>'+p+'%</strong> ('+Math.round(p/100*10)+'/10 صحيح)</div>'+
     '<div class="csig"><div class="csig-box"><span class="csig-line"></span><span class="csig-label">إمضاء الخبير</span></div><div class="csig-box cstamp-box"><div class="cstamp"><div class="cstamp-in">☕<br>Esenza<br>Academy</div></div><span class="csig-label">ختم الأكاديمية</span></div></div>'+
-    '<div class="cft"><div class="cdate">📅 '+ds+'</div><div class="cs">🎓</div><div class="cdate">🔢 '+sn+'</div></div>'+
-    '<div class="cm">🫘 🫘 🫘 Esenza Academy ● صادر عن أكاديمية إيسينزا ● Certified Barista Training 🫘 🫘 🫘</div>'+
+    '<div class="cft"><span class="cdate">📅 '+ds+'</span><span class="csep">✦</span><span class="cdate">🔢 '+sn+'</span></div>'+
+    '<div class="cm"><span>🫘</span> Esenza Academy ● Certified Barista Training ● صادر عن أكاديمية إيسينزا <span>🫘</span></div>'+
     '</div></div>';
 }
 
