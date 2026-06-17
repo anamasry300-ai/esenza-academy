@@ -710,7 +710,7 @@ function getModulesForLevel(level) {
 
 // ==================== Database ====================
 const DB_NAME = 'lucca_academy_db';
-const DB_VER = 2;
+const DB_VER = 3;
 
 class AcademyDB {
     constructor() { this.db = null; this._initPromise = null; }
@@ -911,7 +911,8 @@ function logout() {
     document.getElementById('adminScreen').style.display = 'none';
     document.getElementById('authUser').value = '';
     document.getElementById('authPass').value = '';
-    document.getElementById('authName').value = '';
+    const an = document.getElementById('authName');
+    if (an) an.value = '';
 }
 
 // ==================== Admin Panel ====================
