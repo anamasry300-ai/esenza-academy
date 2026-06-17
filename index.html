@@ -60,20 +60,7 @@
             pointer-events: none;
         }
         .toast.show { opacity: 1; }
-        .login-card {
-            background: white; border-radius: 16px; padding: 40px;
-            max-width: 400px; margin: 60px auto;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-        .login-card h1 { color: #3E2312; margin-bottom: 8px; }
-        .login-card input {
-            width: 100%; padding: 12px; margin-bottom: 12px;
-            border: 2px solid #EDE0D4; border-radius: 8px;
-            font-family: inherit; font-size: 1rem;
-        }
-        .login-card input:focus { border-color: #D4A85A; outline: none; }
-        .error { color: #E74C3C; margin-bottom: 12px; display: none; }
+        
     </style>
 </head>
 <body>
@@ -83,23 +70,9 @@
     <p>تدريب الباريستا — من البداية للاحتراف</p>
 </div>
 
-<div id="loginScreen" class="container">
-    <div class="login-card">
-        <h1>تسجيل الدخول</h1>
-        <div class="error" id="loginError"></div>
-        <input type="text" id="userInput" placeholder="اسم المستخدم">
-        <input type="password" id="passInput" placeholder="كلمة المرور">
-        <button class="btn" id="loginBtn" style="width:100%;font-size:1.1rem;">دخول</button>
-    </div>
-</div>
-
-<div id="appScreen" class="container" style="display:none;">
+<div id="appScreen" class="container">
     <div class="admin-panel">
-        <h2>🔐 لوحة المشرف</h2>
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
-            <span id="userLabel" style="color:#6D4C41;"></span>
-            <button class="btn btn-danger" onclick="doLogout()">تسجيل خروج</button>
-        </div>
+        <h2>🔐 لوحة المشرف — Esenza Academy</h2>
         <h3>➕ إضافة طالب جديد</h3>
         <div class="student-form">
             <input type="text" id="nameInput" placeholder="الاسم">
@@ -118,7 +91,6 @@
 
 <script>
 let students = [];
-let loggedIn = false;
 
 const DB_NAME = 'esenza_db';
 const DB_VER = 1;
@@ -186,56 +158,6 @@ function showToast(msg) {
     clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove('show'), 2000);
 }
 
-async function seedAdmin() {
-    const existing = await dbGet('users', 'admin');
-    if (!existing) {
-        await dbPut('users', { username: 'admin', password: 'esenza2024', name: 'المدير', role: 'admin' });
-    }
-}
-
-async function handleLogin() {
-    const user = document.getElementById('userInput').value.trim();
-    const pass = document.getElementById('passInput').value.trim();
-    const errorEl = document.getElementById('loginError');
-    
-    if (!user || !pass) {
-        errorEl.textContent = '⚠️ أدخل اسم المستخدم وكلمة المرور';
-        errorEl.style.display = 'block';
-        return;
-    }
-    
-    try {
-        await seedAdmin();
-        const u = await dbGet('users', user);
-        if (!u || u.password !== pass) {
-            errorEl.textContent = '⚠️ اسم المستخدم أو كلمة المرور خطأ';
-            errorEl.style.display = 'block';
-            return;
-        }
-        errorEl.style.display = 'none';
-        enterApp(u);
-    } catch(e) {
-        errorEl.textContent = '⚠️ خطأ: ' + e.message;
-        errorEl.style.display = 'block';
-    }
-}
-
-function enterApp(user) {
-    loggedIn = true;
-    document.getElementById('loginScreen').style.display = 'none';
-    document.getElementById('appScreen').style.display = 'block';
-    document.getElementById('userLabel').textContent = '👋 مرحباً ' + user.name;
-    loadStudents();
-}
-
-function doLogout() {
-    loggedIn = false;
-    document.getElementById('loginScreen').style.display = 'block';
-    document.getElementById('appScreen').style.display = 'none';
-    document.getElementById('userInput').value = '';
-    document.getElementById('passInput').value = '';
-}
-
 async function loadStudents() {
     const all = await dbGetAll('users');
     students = all.filter(u => u.username !== 'admin');
@@ -277,15 +199,7 @@ async function deleteStudent(username) {
     loadStudents();
 }
 
-document.getElementById('loginBtn').addEventListener('click', handleLogin);
-document.getElementById('userInput').addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') document.getElementById('passInput').focus();
-});
-document.getElementById('passInput').addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') handleLogin();
-});
-
-seedAdmin();
+loadStudents();
 </script>
 </body>
 </html>
