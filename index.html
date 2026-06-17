@@ -3,788 +3,182 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Esenza Academy — تدريب الباريستا</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <title>Esenza Academy</title>
     <style>
-        :root {
-            --coffee-900: #1A0F0A; --coffee-800: #2A1508; --coffee-700: #3E2312;
-            --coffee-600: #5A3A28; --coffee-500: #6D4C41; --coffee-400: #8B6914;
-            --coffee-300: #A67B5B; --cream: #EDE0D4; --foam: #F7F2EB;
-            --gold: #D4A85A; --gold-light: #E8CC8A; --gold-dark: #B8922E;
-            --green: #27AE60; --red: #E74C3C; --radius: 12px; --radius-lg: 20px;
-        }
         * { margin:0; padding:0; box-sizing:border-box; }
         body {
-            font-family: 'Tajawal', 'Segoe UI', sans-serif;
-            background: var(--foam); color: var(--coffee-900);
-            min-height: 100vh; overflow-x: hidden;
-        }
-        .container { max-width: 1000px; margin: 0 auto; padding: 20px; }
-
-        /* ===== Animations ===== */
-        @keyframes fadeIn { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
-        @keyframes fadeInUp { from { opacity:0; transform:translateY(40px); } to { opacity:1; transform:translateY(0); } }
-        @keyframes scaleIn { from { opacity:0; transform:scale(0.9); } to { opacity:1; transform:scale(1); } }
-        @keyframes slideInRight { from { opacity:0; transform:translateX(30px); } to { opacity:1; transform:translateX(0); } }
-        @keyframes pulse { 0%,100% { transform:scale(1); } 50% { transform:scale(1.05); } }
-        @keyframes shimmer { 0% { background-position:-200% 0; } 100% { background-position:200% 0; } }
-        @keyframes float { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-8px); } }
-        @keyframes confetti-fall { 0% { transform:translateY(-10px) rotate(0deg); opacity:1; } 100% { transform:translateY(100px) rotate(720deg); opacity:0; } }
-        @keyframes glow { 0%,100% { box-shadow:0 0 5px rgba(212,168,90,0.2); } 50% { box-shadow:0 0 20px rgba(212,168,90,0.4); } }
-        .anim-fade { animation:fadeIn 0.6s ease forwards; }
-        .anim-fade-up { animation:fadeInUp 0.8s ease forwards; }
-        .anim-scale { animation:scaleIn 0.5s ease forwards; }
-        .anim-slide { animation:slideInRight 0.5s ease forwards; }
-        .stagger > * { opacity:0; animation:fadeInUp 0.6s ease forwards; }
-        .stagger > *:nth-child(1) { animation-delay:0.05s; }
-        .stagger > *:nth-child(2) { animation-delay:0.15s; }
-        .stagger > *:nth-child(3) { animation-delay:0.25s; }
-        .stagger > *:nth-child(4) { animation-delay:0.35s; }
-        .stagger > *:nth-child(5) { animation-delay:0.45s; }
-
-        /* ===== Level Select ===== */
-        .level-select {
-            padding: 20px 0;
-            animation: fadeInUp 0.6s ease;
-        }
-        .level-select h2 {
-            font-family:'Playfair Display',serif; color:var(--coffee-700);
-            text-align:center; font-size:1.6rem; margin-bottom:4px;
-        }
-        .level-select .subtitle {
-            text-align:center; color:var(--coffee-500); margin-bottom:24px;
-            font-size:0.95rem;
-        }
-        .level-grid {
-            display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-            gap:16px; margin-bottom:24px;
-        }
-        .level-card {
-            background:white; border-radius:var(--radius-lg); overflow:hidden;
-            cursor:pointer; transition:0.4s cubic-bezier(0.4,0,0.2,1);
-            border:2px solid var(--cream); position:relative;
-        }
-        .level-card:hover { transform:translateY(-6px); box-shadow:0 12px 40px rgba(0,0,0,0.1); }
-        .level-card .level-head {
-            padding:24px; text-align:center;
-            background: linear-gradient(135deg, var(--coffee-900), var(--coffee-700));
-            position:relative; overflow:hidden;
-        }
-        .level-card .level-head .level-icon { font-size:3rem; position:relative; z-index:1; }
-        .level-card .level-head h3 {
-            font-family:'Playfair Display',serif; color:var(--gold);
-            font-size:1.5rem; margin-top:8px; position:relative; z-index:1;
-        }
-        .level-card .level-head .level-badge {
-            display:inline-block; background:rgba(212,168,90,0.2);
-            color:var(--gold); padding:4px 16px; border-radius:20px;
-            font-size:0.8rem; margin-top:4px; position:relative; z-index:1;
-        }
-        .level-card .level-body { padding:20px; }
-        .level-card .level-body p { color:var(--coffee-500); font-size:0.9rem; margin-bottom:12px; }
-        .level-card .level-stats {
-            display:flex; justify-content:space-around; text-align:center;
-            padding-top:12px; border-top:1px solid var(--cream);
-        }
-        .level-card .level-stats .stat-num { font-weight:900; color:var(--coffee-700); font-size:1.1rem; }
-        .level-card .level-stats .stat-label { font-size:0.78rem; color:var(--coffee-400); }
-        .level-card .level-progress {
-            height:4px; background:var(--cream); width:100%;
-        }
-        .level-card .level-progress .fill {
-            height:100%; background:linear-gradient(90deg, var(--gold), var(--gold-light));
-            transition:width 1s ease; width:0%;
-        }
-        .level-card .go-btn {
-            display:block; width:100%; padding:12px; border:none;
-            background:linear-gradient(135deg, var(--gold), var(--gold-dark));
-            color:var(--coffee-900); font-family:inherit; font-weight:700; font-size:1rem;
-            cursor:pointer; transition:0.3s;
-        }
-        .level-card .go-btn:hover { filter:brightness(1.1); }
-        .level-card .go-btn .locked {
-            background:var(--cream); color:var(--coffee-400); cursor:not-allowed;
-        }
-
-        /* ===== Auth ===== */
-        .auth-screen {
-            display:flex; align-items:center; justify-content:center;
-            min-height:100vh; padding:20px;
-            background: linear-gradient(135deg, var(--coffee-900) 0%, #2A1508 40%, var(--coffee-700) 70%, #5A3A28 100%);
-            position:relative; overflow:hidden;
-        }
-        .auth-screen::before {
-            content:''; position:absolute; inset:0;
-            background: url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1200&q=80') center/cover no-repeat;
-            opacity:0.08; pointer-events:none;
-        }
-        .auth-screen::after {
-            content:''; position:absolute; top:-50%; left:-50%; width:200%; height:200%;
-            background: radial-gradient(circle at 30% 50%, rgba(212,168,90,0.05) 0%, transparent 50%);
-            pointer-events:none; animation:float 6s ease-in-out infinite;
-        }
-        .auth-card {
-            background: rgba(247,242,235,0.95); backdrop-filter:blur(20px);
-            border-radius: var(--radius-lg); padding:40px; width:100%; max-width:420px;
-            box-shadow: 0 30px 80px rgba(0,0,0,0.4); position:relative; z-index:1;
-            animation:fadeInUp 0.8s ease;
-        }
-        .auth-card .logo-wrap {
-            text-align:center; margin-bottom:16px;
-        }
-        .auth-card .logo-wrap svg { width:80px; height:80px; filter:drop-shadow(0 4px 8px rgba(0,0,0,0.1)); animation:float 4s ease-in-out infinite; }
-        .auth-card h1 {
-            font-family:'Playfair Display',serif; color:var(--coffee-700);
-            text-align:center; font-size:1.8rem; margin-bottom:4px;
-        }
-        .auth-card .subtitle {
-            text-align:center; color:var(--coffee-500); margin-bottom:24px;
-            font-size:0.9rem;
-        }
-        .auth-card .subtitle span { color:var(--gold); font-weight:700; }
-        .auth-card input {
-            width:100%; padding:12px 16px; margin-bottom:12px;
-            border:2px solid var(--cream); border-radius:8px;
-            font-family: inherit; font-size:1rem; background: white;
-            transition: all 0.3s;
-        }
-        .auth-card input:focus { outline:none; border-color:var(--gold); box-shadow:0 0 0 3px rgba(212,168,90,0.15); }
-        .auth-card button {
-            width:100%; padding:12px; border:none; border-radius:8px;
-            font-family: inherit; font-size:1rem; font-weight:700;
-            cursor:pointer; transition:0.3s;
-        }
-        .btn-gold {
-            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-            color:var(--coffee-900); position:relative; overflow:hidden;
-        }
-        .btn-gold:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(212,168,90,0.4); }
-        .btn-gold:active { transform:translateY(0); }
-        .auth-card .switch {
-            text-align:center; margin-top:16px; color:var(--coffee-500);
-            cursor:pointer; font-size:0.9rem; transition:0.3s;
-        }
-        .auth-card .switch:hover { color:var(--gold); }
-        .auth-card .error {
-            color:#c0392b; font-size:0.9rem; text-align:center; margin-bottom:12px;
-            display:none; background:#fde8e8; padding:8px; border-radius:6px;
-        }
-        .auth-card .ref-footer {
-            margin-top:24px; padding-top:16px; border-top:1px solid var(--cream);
-            text-align:center; font-size:0.75rem; color:var(--coffee-300);
-        }
-        .auth-card .ref-footer a { color:var(--gold); text-decoration:none; transition:0.3s; }
-        .auth-card .ref-footer a:hover { color:var(--gold-dark); text-decoration:underline; }
-
-        /* ===== Header ===== */
-        .app-header {
-            background: linear-gradient(135deg, var(--coffee-900), var(--coffee-800));
-            padding:16px 24px; display:flex; justify-content:space-between; align-items:center;
-            border-bottom:2px solid var(--gold); position:sticky; top:0; z-index:100;
-            box-shadow:0 4px 20px rgba(0,0,0,0.3);
-        }
-        .app-header .brand {
-            display:flex; align-items:center; gap:10px;
-            color:var(--gold); font-family:'Playfair Display',serif; font-size:1.3rem;
-        }
-        .app-header .brand svg { width:28px; height:28px; }
-        .app-header .user-info { display:flex; align-items:center; gap:12px; color:var(--foam); font-size:0.9rem; }
-        .app-header .logout-btn {
-            background:transparent; border:1px solid var(--gold); color:var(--gold);
-            padding:6px 14px; border-radius:6px; cursor:pointer; font-family:inherit;
-            font-size:0.85rem; transition:0.3s;
-        }
-        .app-header .logout-btn:hover { background:var(--gold); color:var(--coffee-900); }
-        .progress-bar-wrap {
-            height:4px; background:var(--coffee-700); width:100%;
-        }
-        .progress-bar-fill {
-            height:100%; background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold));
-            background-size:200% 100%; transition:width 0.8s cubic-bezier(0.4,0,0.2,1);
-            width:0%; position:relative;
-        }
-
-        /* ===== Dashboard ===== */
-        .dashboard h3 { margin:24px 0 16px; font-size:1.2rem; color:var(--coffee-700); }
-
-        .hero-banner {
-            position:relative; border-radius:var(--radius-lg); overflow:hidden;
-            margin-bottom:24px; min-height:200px;
-            background: linear-gradient(135deg, var(--coffee-900), var(--coffee-700));
-        }
-        .hero-banner img {
-            width:100%; height:100%; object-fit:cover; position:absolute; inset:0;
-            opacity:0.3;
-        }
-        .hero-banner .hero-content {
-            position:relative; z-index:1; padding:40px 32px;
-            display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;
-        }
-        .hero-banner .hero-text .greeting {
-            font-size:1.6rem; color:white; font-family:'Playfair Display',serif;
-        }
-        .hero-banner .hero-text .greeting strong { color:var(--gold); }
-        .hero-banner .hero-text .sub { color:var(--coffee-300); font-size:0.95rem; margin-top:8px; }
-        .hero-banner .hero-stat {
-            background:rgba(255,255,255,0.1); backdrop-filter:blur(10px);
-            border-radius:var(--radius); padding:16px 24px; text-align:center;
-            border:1px solid rgba(212,168,90,0.2);
-        }
-        .hero-banner .hero-stat .num { font-size:2rem; font-weight:900; color:var(--gold); }
-        .hero-banner .hero-stat .label { font-size:0.85rem; color:var(--coffee-300); }
-
-        .stats-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:12px; margin-bottom:24px; }
-        .stat-card {
-            background:white; border-radius:var(--radius); padding:20px; text-align:center;
-            box-shadow:0 2px 12px rgba(0,0,0,0.06); transition:0.3s;
-            border:1px solid rgba(0,0,0,0.04); position:relative; overflow:hidden;
-        }
-        .stat-card::before {
-            content:''; position:absolute; top:0; left:0; right:0; height:3px;
-            background: linear-gradient(90deg, var(--gold), var(--gold-light));
-            transform:scaleX(0); transform-origin:right; transition:transform 0.5s ease;
-        }
-        .stat-card:hover::before { transform:scaleX(1); }
-        .stat-card:hover { transform:translateY(-4px); box-shadow:0 8px 24px rgba(0,0,0,0.1); }
-        .stat-card .num { font-size:1.8rem; font-weight:900; color:var(--gold); }
-        .stat-card .label { font-size:0.85rem; color:var(--coffee-500); margin-top:4px; }
-
-        /* ===== Modules ===== */
-        .module-card {
-            background:white; border-radius:var(--radius-lg); margin-bottom:16px;
-            box-shadow:0 2px 12px rgba(0,0,0,0.06); cursor:pointer; transition:0.4s cubic-bezier(0.4,0,0.2,1);
-            border:1px solid rgba(0,0,0,0.04); overflow:hidden;
-            display:flex; align-items:stretch; gap:0;
-        }
-        .module-card:hover { transform:translateX(-6px); box-shadow:0 8px 32px rgba(0,0,0,0.12); }
-        .module-card.completed { border-color:var(--gold-light); }
-        .module-card .module-side {
-            width:120px; min-height:140px; flex-shrink:0;
-            display:flex; flex-direction:column; align-items:center; justify-content:center;
-            position:relative; overflow:hidden;
-        }
-        .module-card .module-side .bg-img {
-            position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0.2;
-        }
-        .module-card .module-side .overlay {
-            position:absolute; inset:0;
-            background: linear-gradient(135deg, var(--coffee-700), var(--coffee-500));
-            opacity:0.85;
-        }
-        .module-card .module-side .module-icon {
-            position:relative; z-index:1; font-size:2.4rem;
-            filter:drop-shadow(0 2px 4px rgba(0,0,0,0.2));
-        }
-        .module-card .module-side .module-num {
-            position:relative; z-index:1; color:rgba(255,255,255,0.6); font-size:0.75rem;
-            margin-top:4px;
-        }
-        .module-card .info { flex:1; padding:20px 20px 20px 24px; }
-        .module-card .info h4 { font-size:1.05rem; color:var(--coffee-700); }
-        .module-card .info p { font-size:0.85rem; color:var(--coffee-500); margin-top:4px; }
-        .module-card .info .lessons-preview {
-            display:flex; gap:6px; margin-top:8px; flex-wrap:wrap;
-        }
-        .module-card .info .lessons-preview .dot {
-            width:10px; height:10px; border-radius:50%;
-            background:var(--cream); transition:0.3s; border:1px solid transparent;
-        }
-        .module-card .info .lessons-preview .dot.done { background:var(--gold); border-color:var(--gold-dark); }
-        .module-card .info .lessons-preview .dot.active { background:var(--coffee-500); }
-        .module-card .badge-wrap { padding:20px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; flex-shrink:0; }
-        .module-card .badge {
-            background:var(--cream); padding:8px 16px; border-radius:20px;
-            font-size:0.8rem; color:var(--coffee-500); white-space:nowrap;
-            font-weight:700; transition:0.3s;
-        }
-        .module-card .badge.done { background:linear-gradient(135deg, var(--gold-light), var(--gold)); color:var(--coffee-900); }
-        .module-card .quiz-btn {
-            display:inline-block; padding:4px 12px;
-            background:var(--foam); border:1px solid var(--cream); border-radius:20px;
-            font-size:0.78rem; color:var(--coffee-500); cursor:pointer; transition:0.3s;
-            font-weight:500;
-        }
-        .module-card .quiz-btn:hover { border-color:var(--gold); background:var(--gold-light); transform:scale(1.05); }
-        .module-card .quiz-btn.passed { background:#d4edda; border-color:var(--green); color:var(--green); }
-
-        .love-footer { text-align:center; padding:24px 16px 8px; color:var(--coffee-700); font-size:0.95rem; font-weight:500; }
-        .love-footer p { margin:0; }
-        .cert-cta {
-            text-align:center; margin:24px 0; animation:pulse 2s ease-in-out infinite;
-        }
-        .cert-cta button {
-            padding:16px 48px; border:none; border-radius:var(--radius);
-            font-family:inherit; font-weight:700; cursor:pointer; font-size:1.2rem;
-            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-            color:var(--coffee-900); transition:0.3s;
-        }
-        .cert-cta button:hover { transform:translateY(-2px) scale(1.02); box-shadow:0 8px 30px rgba(212,168,90,0.4); }
-
-        /* ===== Lesson Screen ===== */
-        .lesson-screen {
-            background:white; border-radius:var(--radius-lg); overflow:hidden;
-            margin:20px 0; box-shadow:0 8px 40px rgba(0,0,0,0.08);
-            animation:fadeInUp 0.5s ease;
-        }
-        .lesson-screen .lesson-hero {
-            position:relative; height:200px; overflow:hidden;
-            background: linear-gradient(135deg, var(--coffee-900), var(--coffee-700));
-        }
-        .lesson-screen .lesson-hero img {
-            width:100%; height:100%; object-fit:cover; opacity:0.25; position:absolute;
-        }
-        .lesson-screen .lesson-hero .hero-overlay {
-            position:absolute; inset:0;
-            background: linear-gradient(transparent 40%, rgba(26,15,10,0.8));
-        }
-        .lesson-screen .lesson-hero .hero-text {
-            position:relative; z-index:1; padding:32px; height:100%;
-            display:flex; flex-direction:column; justify-content:flex-end;
-        }
-        .lesson-screen .lesson-hero .hero-text .breadcrumb {
-            color:var(--coffee-300); font-size:0.85rem; margin-bottom:8px;
-        }
-        .lesson-screen .lesson-hero .hero-text h2 {
-            color:white; font-family:'Playfair Display',serif; font-size:1.6rem;
-        }
-        .lesson-screen .lesson-body-wrap { padding:32px; }
-        .lesson-screen .back {
-            display:inline-flex; align-items:center; gap:6px; margin-bottom:20px;
-            color:var(--coffee-500); cursor:pointer; font-size:0.9rem; padding:8px 16px;
-            border-radius:8px; transition:0.3s;
-        }
-        .lesson-screen .back:hover { background:var(--cream); color:var(--coffee-700); }
-        .lesson-screen .content { line-height:1.8; font-size:1rem; color:var(--coffee-900); }
-        .lesson-screen .content p { margin-bottom:16px; }
-        .lesson-screen .content ul { margin:12px 0 16px 20px; }
-        .lesson-screen .content li { margin-bottom:8px; }
-        .lesson-screen .content h3 { color:var(--coffee-700); margin:24px 0 12px; font-size:1.15rem; }
-        .lesson-screen .content h4 { color:var(--coffee-700); margin:20px 0 10px; font-size:1.05rem; }
-        .lesson-screen .content .learning-objectives {
-            background: linear-gradient(135deg, var(--cream), var(--foam));
-            padding:20px 24px; border-radius:var(--radius); margin-bottom:20px;
-            border-right:4px solid var(--gold);
-        }
-        .lesson-screen .content .learning-objectives h4 { margin-top:0; margin-bottom:8px; }
-        .lesson-screen .content .highlight {
-            background:var(--cream); padding:16px 20px; border-radius:8px;
-            border-right:4px solid var(--gold); margin:16px 0;
-        }
-        .lesson-screen .content .img-card {
-            background:var(--foam); border-radius:var(--radius); padding:16px; margin:16px 0;
-            text-align:center; border:1px solid var(--cream);
-            transition:0.3s;
-        }
-        .lesson-screen .content .img-card:hover { box-shadow:0 4px 16px rgba(0,0,0,0.06); }
-        .lesson-screen .content .img-card img {
-            max-width:100%; border-radius:8px; display:block; margin:0 auto;
-        }
-        .lesson-screen .content .img-card .caption {
-            margin-top:8px; font-size:0.85rem; color:var(--coffee-500);
-        }
-        .lesson-screen .content table {
-            width:100%; border-collapse:collapse; margin:16px 0; border-radius:8px; overflow:hidden;
-        }
-        .lesson-screen .content th, .lesson-screen .content td {
-            padding:10px; text-align:right; border:1px solid var(--cream);
-        }
-        .lesson-screen .content th { background:var(--cream); color:var(--coffee-700); font-weight:700; }
-        .lesson-screen .refs {
-            margin-top:24px; padding:16px 20px; background:var(--foam); border-radius:8px;
-            font-size:0.85rem; border:1px solid var(--cream);
-        }
-        .lesson-screen .refs strong { color:var(--coffee-700); }
-        .lesson-screen .refs a { color:var(--gold); text-decoration:none; transition:0.3s; }
-        .lesson-screen .refs a:hover { color:var(--gold-dark); text-decoration:underline; }
-        .lesson-actions {
-            display:flex; gap:12px; margin-top:24px; flex-wrap:wrap;
-            padding:20px; background:var(--foam); border-radius:var(--radius);
-        }
-        .lesson-actions button, .lesson-actions .btn {
-            padding:12px 28px; border:none; border-radius:8px;
-            font-family:inherit; font-size:0.95rem; font-weight:700; cursor:pointer; transition:0.3s;
-        }
-        .lesson-actions button:hover { transform:translateY(-2px); }
-        .btn-prev { background:var(--cream); color:var(--coffee-700); }
-        .btn-prev:hover { background:var(--coffee-300); color:white; }
-        .btn-next { background:var(--gold); color:var(--coffee-900); }
-        .btn-next:hover { box-shadow:0 4px 15px rgba(212,168,90,0.4); }
-        .btn-complete { background:var(--green); color:white; }
-        .btn-complete:disabled { opacity:0.4; cursor:not-allowed; transform:none !important; }
-        .btn-complete:not(:disabled):hover { box-shadow:0 4px 15px rgba(39,174,96,0.4); }
-
-        /* ===== Quiz ===== */
-        .quiz-section {
-            margin-top:24px; padding:24px; background:var(--foam); border-radius:var(--radius);
-            border:2px solid var(--cream);
-        }
-        .quiz-section h3 { color:var(--coffee-700); margin-bottom:16px; display:flex; align-items:center; gap:8px; }
-        .quiz-status {
-            display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap;
-        }
-        .quiz-status .q-dot {
-            width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center;
-            background:var(--cream); font-size:0.8rem; font-weight:700; color:var(--coffee-500);
-            transition:0.3s; border:2px solid transparent;
-        }
-        .quiz-status .q-dot.current { border-color:var(--gold); background:var(--gold-light); color:var(--coffee-900); }
-        .quiz-status .q-dot.answered { background:var(--gold); color:white; }
-        .quiz-question {
-            margin-bottom:20px; padding:20px; background:white; border-radius:var(--radius);
-            animation:fadeIn 0.3s ease;
-        }
-        .quiz-question .q-text { font-weight:700; margin-bottom:12px; color:var(--coffee-700); font-size:1.05rem; }
-        .quiz-option {
-            display:flex; align-items:center; gap:10px; padding:12px 16px;
-            margin-bottom:8px; border-radius:8px; cursor:pointer; transition:0.3s;
-            border:2px solid var(--cream); font-size:0.95rem;
-        }
-        .quiz-option:hover { border-color:var(--coffee-300); background:var(--foam); transform:translateX(-4px); }
-        .quiz-option.selected { border-color:var(--gold); background:var(--gold-light); transform:translateX(-4px); }
-        .quiz-option.correct { border-color:var(--green); background:#d4edda; animation:scaleIn 0.3s ease; }
-        .quiz-option.wrong { border-color:var(--red); background:#fde8e8; animation:scaleIn 0.3s ease; }
-        .quiz-option .letter {
-            width:28px; height:28px; border-radius:50%; background:var(--cream);
-            display:flex; align-items:center; justify-content:center;
-            font-size:0.8rem; font-weight:700; color:var(--coffee-500); flex-shrink:0;
-            transition:0.3s;
-        }
-        .quiz-option.selected .letter { background:var(--gold); color:white; }
-        .quiz-option.correct .letter { background:var(--green); color:white; }
-        .quiz-option.wrong .letter { background:var(--red); color:white; }
-        .quiz-result {
-            margin-top:16px; padding:20px; border-radius:var(--radius); text-align:center;
-            font-weight:700; display:none; animation:scaleIn 0.5s ease;
-        }
-        .quiz-result.pass { background:#d4edda; color:var(--green); display:block; }
-        .quiz-result.fail { background:#fde8e8; color:var(--red); display:block; }
-        .quiz-result .result-icon { font-size:2rem; margin-bottom:8px; }
-        .quiz-result .result-score { font-size:1.4rem; }
-
-        /* Confetti */
-        .confetti-container { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:9999; }
-        .confetti { position:absolute; width:8px; height:8px; border-radius:2px; animation:confetti-fall 1.5s ease forwards; }
-
-        /* ===== Certificate ===== */
-        .certificate {
-            background:white; border:3px double var(--gold); border-radius:var(--radius-lg);
-            padding:48px 40px; text-align:center; margin:20px 0;
-            box-shadow:0 8px 40px rgba(212,168,90,0.15);
-            position:relative; animation:scaleIn 0.6s ease;
-        }
-        .certificate::before {
-            content:''; position:absolute; inset:8px; border:1px solid var(--cream);
-            border-radius:12px; pointer-events:none;
-        }
-        .certificate h1 { font-family:'Playfair Display',serif; color:var(--coffee-700); font-size:2rem; }
-        .certificate .seal { font-size:4rem; margin:16px 0; animation:float 3s ease-in-out infinite; }
-        .certificate .name { font-size:1.8rem; color:var(--gold); font-weight:900; margin:12px 0; }
-        .certificate .date { color:var(--coffee-500); font-size:0.9rem; }
-        .cert-actions { display:flex; gap:12px; justify-content:center; margin-top:24px; flex-wrap:wrap; }
-        .cert-actions button {
-            padding:12px 32px; border:none; border-radius:8px;
-            font-family:inherit; font-weight:700; cursor:pointer; transition:0.3s;
-        }
-        .cert-actions button:hover { transform:translateY(-2px); }
-
-        /* ===== Toast ===== */
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: #F7F2EB; color: #1A0F0A;
+            min-height: 100vh;
+        }
+        .header {
+            background: linear-gradient(135deg, #1A0F0A, #3E2312);
+            padding: 20px; text-align: center;
+            border-bottom: 3px solid #D4A85A;
+        }
+        .header h1 {
+            font-family: 'Georgia', serif;
+            color: #D4A85A; font-size: 1.8rem;
+        }
+        .header p { color: #A67B5B; font-size: 0.9rem; margin-top: 4px; }
+        .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+        .admin-panel {
+            background: white; border-radius: 12px; padding: 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+        }
+        .admin-panel h2 { color: #3E2312; margin-bottom: 16px; }
+        .student-form { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+        .student-form input {
+            flex: 1; min-width: 120px; padding: 10px 14px;
+            border: 2px solid #EDE0D4; border-radius: 8px;
+            font-family: inherit; font-size: 0.95rem;
+        }
+        .student-form input:focus { outline: none; border-color: #D4A85A; }
+        .btn {
+            padding: 10px 24px; border: none; border-radius: 8px;
+            font-family: inherit; font-weight: 700; cursor: pointer;
+            background: #D4A85A; color: #1A0F0A; transition: 0.3s;
+        }
+        .btn:hover { background: #B8922E; transform: translateY(-1px); }
+        .btn-danger { background: #E74C3C; color: white; }
+        .btn-danger:hover { background: #c0392b; }
+        .student-list { margin-top: 16px; }
+        .student-item {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 12px 0; border-bottom: 1px solid #EDE0D4;
+        }
+        .student-item strong { color: #3E2312; }
+        .student-item span { color: #6D4C41; font-size: 0.85rem; }
+        .empty { color: #A67B5B; text-align: center; padding: 20px; }
         .toast {
-            position:fixed; bottom:30px; left:50%; transform:translateX(-50%) translateY(20px);
-            background:var(--coffee-900); color:var(--foam); padding:14px 28px;
-            border-radius:var(--radius); font-size:0.9rem; z-index:999;
-            opacity:0; transition:0.4s cubic-bezier(0.4,0,0.2,1); pointer-events:none;
-            box-shadow:0 8px 30px rgba(0,0,0,0.3);
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            background: #1A0F0A; color: #EDE0D4; padding: 12px 24px;
+            border-radius: 8px; opacity: 0; transition: 0.4s;
+            pointer-events: none;
         }
-        .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
-
-        @media (max-width:600px) {
-            .container { padding:12px; }
-            .auth-card { padding:24px; margin:12px; }
-            .lesson-screen .lesson-hero { height:140px; }
-            .lesson-screen .lesson-body-wrap { padding:20px; }
-            .module-card { flex-direction:column; }
-            .module-card .module-side { width:100%; min-height:80px; flex-direction:row; padding:12px; }
-            .module-card .module-side .bg-img { opacity:0.1; }
-            .module-card .badge-wrap { flex-direction:row; padding:12px 20px; }
-            .hero-banner .hero-content { padding:24px 20px; flex-direction:column; text-align:center; }
-            .hero-banner .hero-text .greeting { font-size:1.2rem; }
-            .lesson-actions { flex-direction:column; }
-            .lesson-actions button { width:100%; }
+        .toast.show { opacity: 1; }
+        .login-card {
+            background: white; border-radius: 16px; padding: 40px;
+            max-width: 400px; margin: 60px auto;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            text-align: center;
         }
+        .login-card h1 { color: #3E2312; margin-bottom: 8px; }
+        .login-card input {
+            width: 100%; padding: 12px; margin-bottom: 12px;
+            border: 2px solid #EDE0D4; border-radius: 8px;
+            font-family: inherit; font-size: 1rem;
+        }
+        .login-card input:focus { border-color: #D4A85A; outline: none; }
+        .error { color: #E74C3C; margin-bottom: 12px; display: none; }
     </style>
 </head>
 <body>
 
-<!-- ==================== SVG LOGO ==================== -->
-<svg style="display:none;" id="logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-    <defs><linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#D4A85A"/><stop offset="100%" stop-color="#B8922E"/></linearGradient></defs>
-    <circle cx="50" cy="50" r="45" fill="#EDE0D4" stroke="url(#logo-grad)" stroke-width="2"/>
-    <path d="M30 60 Q35 35 50 30 Q65 35 70 60" fill="none" stroke="#6D4C41" stroke-width="3" stroke-linecap="round"/>
-    <path d="M35 60 Q40 45 50 40 Q60 45 65 60" fill="none" stroke="#3E2312" stroke-width="2" stroke-linecap="round"/>
-    <circle cx="50" cy="30" r="5" fill="#D4A85A"/>
-    <path d="M40 65 Q45 75 50 78 Q55 75 60 65" fill="none" stroke="#A67B5B" stroke-width="2"/>
-    <text x="50" y="90" text-anchor="middle" font-size="8" fill="#3E2312" font-weight="bold">academy</text>
-</svg>
+<div class="header">
+    <h1>☕ Esenza Academy</h1>
+    <p>تدريب الباريستا — من البداية للاحتراف</p>
+</div>
 
-<!-- ==================== AUTH ==================== -->
-<div id="authScreen" class="auth-screen">
-    <div class="auth-card">
-        <div class="logo-wrap">
-            <svg width="80" height="80" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="45" fill="#EDE0D4" stroke="url(#logo-grad)" stroke-width="2"/>
-                <path d="M30 60 Q35 35 50 30 Q65 35 70 60" fill="none" stroke="#6D4C41" stroke-width="3" stroke-linecap="round"/>
-                <path d="M35 60 Q40 45 50 40 Q60 45 65 60" fill="none" stroke="#3E2312" stroke-width="2" stroke-linecap="round"/>
-                <circle cx="50" cy="30" r="5" fill="#D4A85A"/>
-                <path d="M40 65 Q45 75 50 78 Q55 75 60 65" fill="none" stroke="#A67B5B" stroke-width="2"/>
-            </svg>
-        </div>
-        <h1>Esenza Academy</h1>
-        <div class="subtitle">تدريب الباريستا — <span>من البداية للاحتراف</span></div>
-        <div class="error" id="authError"></div>
-        <input type="text" id="authUser" placeholder="اسم المستخدم" autocomplete="off">
-        <input type="password" id="authPass" placeholder="كلمة المرور">
-        <button class="btn-gold" id="authBtn" onclick="handleAuth()">تسجيل الدخول</button>
-        <div class="switch" id="authSwitch" onclick="showAdminHint()" style="font-size:0.75rem;color:var(--coffee-300);">🔐 دخول المشرف</div>
-        <div class="ref-footer">
-            بالتعاون مع
-            <a href="https://sca.coffee" target="_blank">SCA</a> ·
-            <a href="https://worldcoffeeresearch.org" target="_blank">WCR</a> ·
-            <a href="https://baristahustle.com" target="_blank">Barista Hustle</a> ·
-            <a href="https://coffeecollective.dk" target="_blank">Coffee Collective</a>
-        </div>
+<div id="loginScreen" class="container">
+    <div class="login-card">
+        <h1>تسجيل الدخول</h1>
+        <div class="error" id="loginError"></div>
+        <input type="text" id="userInput" placeholder="اسم المستخدم">
+        <input type="password" id="passInput" placeholder="كلمة المرور">
+        <button class="btn" id="loginBtn" style="width:100%;font-size:1.1rem;">دخول</button>
     </div>
 </div>
 
-<!-- ==================== LEVEL SELECT ==================== -->
-<div id="levelScreen" style="display:none;">
-    <div class="container level-select">
-        <h2>🎯 اختر مستواك</h2>
-        <div class="subtitle">ابدأ رحلتك في عالم القهوة من حيث أنت</div>
-        <div class="level-grid" id="levelGrid"></div>
-    </div>
-</div>
-
-<!-- ==================== ADMIN PANEL ==================== -->
-<div id="adminScreen" style="display:none;">
-    <div class="container level-select">
+<div id="appScreen" class="container" style="display:none;">
+    <div class="admin-panel">
         <h2>🔐 لوحة المشرف</h2>
-        <div class="subtitle" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;">
-            <span>إدارة الطلاب — أضف أو احذف الطلاب</span>
-            <span id="adminLevelBadge" style="font-size:0.8rem;background:rgba(212,168,90,0.2);padding:4px 12px;border-radius:6px;color:var(--gold);">admin</span>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+            <span id="userLabel" style="color:#6D4C41;"></span>
+            <button class="btn btn-danger" onclick="doLogout()">تسجيل خروج</button>
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;">
-            <div style="background:white;border-radius:var(--radius-lg);padding:24px;">
-                <h3 style="color:var(--coffee-700);margin-bottom:16px;font-size:1.1rem;">➕ إضافة طالب جديد</h3>
-                <input type="text" id="newStudentName" placeholder="الاسم الكامل" style="width:100%;padding:10px 14px;margin-bottom:10px;border:2px solid var(--cream);border-radius:8px;font-family:inherit;font-size:0.95rem;">
-                <input type="text" id="newStudentUser" placeholder="اسم المستخدم" style="width:100%;padding:10px 14px;margin-bottom:10px;border:2px solid var(--cream);border-radius:8px;font-family:inherit;font-size:0.95rem;">
-                <input type="text" id="newStudentPass" placeholder="كلمة المرور" style="width:100%;padding:10px 14px;margin-bottom:10px;border:2px solid var(--cream);border-radius:8px;font-family:inherit;font-size:0.95rem;">
-                <button class="go-btn" onclick="addStudent()" style="border-radius:8px;">➕ إضافة طالب</button>
-            </div>
-            <div style="background:white;border-radius:var(--radius-lg);padding:24px;max-height:400px;overflow-y:auto;">
-                <div style="margin-bottom:12px;padding:12px;background:var(--foam);border-radius:8px;">
-                <h4 style="color:var(--coffee-700);font-size:0.95rem;margin-bottom:8px;">🔑 تغيير كلمة مرور المشرف</h4>
-                <input type="text" id="newAdminPass" placeholder="كلمة المرور الجديدة" style="width:100%;padding:8px 12px;margin-bottom:6px;border:2px solid var(--cream);border-radius:6px;font-family:inherit;font-size:0.9rem;">
-                <button class="go-btn" onclick="changeAdminPass()" style="font-size:0.85rem;padding:8px;border-radius:6px;">تحديث</button>
-            </div>
-            <h3 style="color:var(--coffee-700);margin-bottom:16px;font-size:1.1rem;">📋 قائمة الطلاب</h3>
-                <div id="studentList"></div>
-            </div>
+        <h3>➕ إضافة طالب جديد</h3>
+        <div class="student-form">
+            <input type="text" id="nameInput" placeholder="الاسم">
+            <input type="text" id="userNewInput" placeholder="اسم المستخدم">
+            <input type="text" id="passNewInput" placeholder="كلمة المرور">
+            <button class="btn" onclick="addStudent()">إضافة</button>
         </div>
-        <div style="text-align:center;margin-top:16px;">
-            <button class="go-btn" onclick="goToLevelsFromAdmin()" style="display:inline-block;width:auto;padding:12px 32px;margin:0 auto;border-radius:8px;">☕ دخول كطالب — تجربة المنهج</button>
-            <button onclick="logout()" style="display:inline-block;width:auto;padding:12px 32px;margin:8px;border:2px solid var(--gold);border-radius:8px;background:transparent;color:var(--gold);font-family:inherit;font-weight:700;cursor:pointer;font-size:1rem;">تسجيل الخروج</button>
+        <h3>📋 قائمة الطلاب</h3>
+        <div id="studentList" class="student-list">
+            <div class="empty">لا يوجد طلاب بعد</div>
         </div>
     </div>
 </div>
 
-<!-- ==================== MAIN APP ==================== -->
-<div id="appScreen" style="display:none;">
-    <div class="app-header">
-        <div class="brand" onclick="showLevelSelect()" style="cursor:pointer;">
-            <svg width="28" height="28" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="45" fill="#EDE0D4" stroke="#D4A85A" stroke-width="2"/>
-                <path d="M30 60 Q35 35 50 30 Q65 35 70 60" fill="none" stroke="#6D4C41" stroke-width="3" stroke-linecap="round"/>
-                <circle cx="50" cy="30" r="4" fill="#D4A85A"/>
-            </svg>
-            Esenza Academy
-        </div>
-        <div class="user-info">
-            <span id="currentLevelBadge" style="font-size:0.8rem;background:rgba(212,168,90,0.2);padding:4px 12px;border-radius:6px;color:var(--gold);"></span>
-            <span id="userDisplay"></span>
-            <button class="logout-btn" onclick="logout()">تسجيل الخروج</button>
-        </div>
-    </div>
-    <div class="progress-bar-wrap">
-        <div class="progress-bar-fill" id="globalProgressBar"></div>
-    </div>
-
-    <div class="container">
-        <!-- Dashboard -->
-        <div id="dashboard" class="dashboard">
-            <div class="hero-banner">
-                <img src="https://images.unsplash.com/photo-1504630083234-14187a9df0f5?w=1000&q=80" alt="">
-                <div class="hero-content">
-                    <div class="hero-text">
-                        <div class="greeting">☕ صباح القهوة، <strong id="userNameDisplay"></strong>!</div>
-                        <div class="sub">أكاديمية تدريب الباريستا — من البداية إلى الاحتراف</div>
-                    </div>
-                    <div class="hero-stat">
-                        <div class="num" id="statProgress">0%</div>
-                        <div class="label">تقدم الكورس</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="stats-row stagger">
-                <div class="stat-card">
-                    <div class="num" id="statCompleted">0</div>
-                    <div class="label">📚 دروس مكتملة</div>
-                </div>
-                <div class="stat-card">
-                    <div class="num" id="statQuizPassed">0</div>
-                    <div class="label">✅ اختبارات ناجحة</div>
-                </div>
-                <div class="stat-card">
-                    <div class="num" id="statRemaining">0</div>
-                    <div class="label">📝 دروس متبقية</div>
-                </div>
-            </div>
-
-            <h3 style="display:flex;align-items:center;gap:8px;">📚 مقرر الكورس</h3>
-            <div id="modulesList" class="stagger"></div>
-            <div class="love-footer">
-                <p>☕ نحن نحب القهوة. ونحب أي شخص يحب القهوة. ❤️</p>
-                <p style="font-size:0.8rem;color:var(--coffee-400);margin-top:4px;">Esenza Academy — Professional Barista Training</p>
-            </div>
-        </div>
-
-        <!-- Lesson View -->
-        <div id="lessonView" style="display:none;">
-            <div class="lesson-screen" id="lessonContent"></div>
-        </div>
-
-        <!-- Certificate View -->
-        <div id="certView" style="display:none;">
-            <div class="certificate">
-                <h1>Esenza Academy</h1>
-                <div class="seal">☕</div>
-                <p style="font-size:1.1rem;color:var(--coffee-500);">يشهد بأن</p>
-                <div class="name" id="certName"></div>
-                <p style="font-size:1rem;color:var(--coffee-500);">قد أتم بنجاح دورة</p>
-                <p style="font-size:1.3rem;font-weight:700;color:var(--coffee-700);margin:8px 0;" id="certLevelName">تدريب الباريستا المعتمد</p>
-                <div class="date" id="certDate" style="margin-top:4px;"></div>
-                <p style="margin-top:20px;font-size:0.85rem;color:var(--coffee-300);">
-                    هذا الكورس معتمد على معايير<br>
-                    SCA — Specialty Coffee Association
-                </p>
-                <div class="cert-actions">
-                    <button class="btn-gold" onclick="printCert()">🖨️ طباعة الشهادة</button>
-                    <button onclick="backToDashboard()" style="padding:12px 24px;background:transparent;border:2px solid var(--gold);border-radius:8px;font-family:inherit;cursor:pointer;color:var(--gold);font-weight:700;transition:0.3s;">⬅ الرجوع</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Toast -->
 <div class="toast" id="toast"></div>
 
-<script src="academic-content.js"></script>
 <script>
-// ==================== Course & Level Data ====================
-const COURSE = window.COURSE;
+let students = [];
+let loggedIn = false;
 
-const LEVELS = {
-  A: { id:'A', title:'مبتدئ', icon:'🌱', emoji:'☕', color:'#27AE60', desc:'اكتشاف القهوة وأصولها — للمبتدئين', full:'المستوى التمهيدي — من الصفر إلى أول فنجان احترافي' },
-  B: { id:'B', title:'محترف', icon:'🔥', emoji:'🌰', color:'#E67E22', desc:'أسرار التحميص والاستخلاص المتقدم', full:'المستوى المتوسط — التحميص، الاستخلاص، مصادر البن' },
-  C: { id:'C', title:'ماستر', icon:'👑', emoji:'🔬', color:'#8E44AD', desc:'التقييم الحسي والإدارة والابتكار', full:'المستوى المتقدم — كابينج، إدارة مقهى، مستقبل القهوة' },
-};
+const DB_NAME = 'esenza_db';
+const DB_VER = 1;
 
-function getLevelOfModule(modId) {
-  return modId.replace('module-','').charAt(0);
+function openDB() {
+    return new Promise((resolve, reject) => {
+        const req = indexedDB.open(DB_NAME, DB_VER);
+        req.onupgradeneeded = (e) => {
+            const db = e.target.result;
+            if (!db.objectStoreNames.contains('users')) {
+                db.createObjectStore('users', { keyPath: 'username' });
+            }
+            if (!db.objectStoreNames.contains('settings')) {
+                db.createObjectStore('settings', { keyPath: 'key' });
+            }
+        };
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error);
+    });
 }
 
-function getModulesForLevel(level) {
-  return COURSE.filter(m => getLevelOfModule(m.id) === level);
+async function dbGet(store, key) {
+    const db = await openDB();
+    return new Promise((res, rej) => {
+        const t = db.transaction(store, 'readonly');
+        const r = t.objectStore(store).get(key);
+        r.onsuccess = () => { db.close(); res(r.result); };
+        r.onerror = () => { db.close(); rej(r.error); };
+    });
 }
 
-// ==================== Database ====================
-const DB_NAME = 'lucca_academy_db';
-const DB_VER = 3;
-
-class AcademyDB {
-    constructor() { this.db = null; this._initPromise = null; }
-    async init() {
-        if (this.db) return;
-        if (this._initPromise) return this._initPromise;
-        this._initPromise = new Promise((resolve, reject) => {
-            const req = indexedDB.open(DB_NAME, DB_VER);
-            req.onerror = () => { this._initPromise = null; reject(req.error); };
-            req.onsuccess = () => { this.db = req.result; resolve(); };
-            req.onupgradeneeded = (e) => {
-                const d = e.target.result;
-    if (!d.objectStoreNames.contains('users'))
-        d.createObjectStore('users', { keyPath: 'username' });
-    if (!d.objectStoreNames.contains('settings'))
-        d.createObjectStore('settings', { keyPath: 'key' });
-                if (!d.objectStoreNames.contains('progress')) {
-                    const ps = d.createObjectStore('progress', { keyPath: 'id', autoIncrement: true });
-                    ps.createIndex('username', 'username', { unique: false });
-                }
-                if (!d.objectStoreNames.contains('quiz')) {
-                    const qs = d.createObjectStore('quiz', { keyPath: 'id', autoIncrement: true });
-                    qs.createIndex('username', 'username', { unique: false });
-                }
-            };
-        });
-    }
-    async get(store, key) {
-        return new Promise((res, rej) => {
-            const t = this.db.transaction(store, 'readonly');
-            const r = t.objectStore(store).get(key);
-            r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
-        });
-    }
-    async getAll(store) {
-        return new Promise((res, rej) => {
-            const t = this.db.transaction(store, 'readonly');
-            const r = t.objectStore(store).getAll();
-            r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
-        });
-    }
-    async put(store, data) {
-        return new Promise((res, rej) => {
-            const t = this.db.transaction(store, 'readwrite');
-            const r = t.objectStore(store).put(data);
-            r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
-        });
-    }
-    async getAllByIndex(store, index, value) {
-        return new Promise((res, rej) => {
-            const t = this.db.transaction(store, 'readonly');
-            const r = t.objectStore(store).index(index).getAll(value);
-            r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
-        });
-    }
-    async deleteByIndex(store, index, value) {
-        const items = await this.getAllByIndex(store, index, value);
-        for (const item of items) {
-            await new Promise((res, rej) => {
-                const t = this.db.transaction(store, 'readwrite');
-                const r = t.objectStore(store).delete(item.id);
-                r.onsuccess = () => res(); r.onerror = () => rej(r.error);
-            });
-        }
-    }
+async function dbPut(store, data) {
+    const db = await openDB();
+    return new Promise((res, rej) => {
+        const t = db.transaction(store, 'readwrite');
+        const r = t.objectStore(store).put(data);
+        r.onsuccess = () => { db.close(); res(); };
+        r.onerror = () => { db.close(); rej(r.error); };
+    });
 }
 
-const ldb = new AcademyDB();
+async function dbGetAll(store) {
+    const db = await openDB();
+    return new Promise((res, rej) => {
+        const t = db.transaction(store, 'readonly');
+        const r = t.objectStore(store).getAll();
+        r.onsuccess = () => { db.close(); res(r.result); };
+        r.onerror = () => { db.close(); rej(r.error); };
+    });
+}
 
-// ==================== App State ====================
-let currentUser = null;
-let isRegisterMode = false;
-let allProgress = [];
-let allQuiz = [];
+async function dbDelete(store, key) {
+    const db = await openDB();
+    return new Promise((res, rej) => {
+        const t = db.transaction(store, 'readwrite');
+        const r = t.objectStore(store).delete(key);
+        r.onsuccess = () => { db.close(); res(); };
+        r.onerror = () => { db.close(); rej(r.error); };
+    });
+}
 
 function showToast(msg) {
     const el = document.getElementById('toast');
@@ -792,571 +186,106 @@ function showToast(msg) {
     clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove('show'), 2000);
 }
 
-// ==================== Admin Config ====================
-const ADMIN_USER = 'admin';
-const ADMIN_NAME = 'المدير';
-
-async function getAdminPass() {
-    const s = await ldb.get('settings', 'admin_pass');
-    return s ? s.value : 'esenza2024';
-}
-
 async function seedAdmin() {
-    const existing = await ldb.get('users', ADMIN_USER);
+    const existing = await dbGet('users', 'admin');
     if (!existing) {
-        const pass = await getAdminPass();
-        await ldb.put('users', { username: ADMIN_USER, password: pass, name: ADMIN_NAME, role: 'admin', joined: new Date().toISOString() });
+        await dbPut('users', { username: 'admin', password: 'esenza2024', name: 'المدير', role: 'admin' });
     }
 }
 
-// Login attempt lockout
-const loginAttempts = {};
-
-async function handleAuth() {
-    const user = document.getElementById('authUser').value.trim();
-    const pass = document.getElementById('authPass').value.trim();
-    const errorEl = document.getElementById('authError');
-
-    if (!user || !pass) { errorEl.textContent = '⚠️ أدخل اسم المستخدم وكلمة المرور'; errorEl.style.display = 'block'; return; }
-
+async function handleLogin() {
+    const user = document.getElementById('userInput').value.trim();
+    const pass = document.getElementById('passInput').value.trim();
+    const errorEl = document.getElementById('loginError');
+    
+    if (!user || !pass) {
+        errorEl.textContent = '⚠️ أدخل اسم المستخدم وكلمة المرور';
+        errorEl.style.display = 'block';
+        return;
+    }
+    
     try {
-        await ldb.init();
         await seedAdmin();
-        const u = await ldb.get('users', user);
-        if (u && u.password === pass) {
-            currentUser = { username: u.username, name: u.name, role: u.role || 'student' };
-            errorEl.style.display = 'none';
-            document.getElementById('authScreen').style.display = 'none';
-            currentLevel = null;
-            startInactivityTimer();
-            if (currentUser.role === 'admin') await showAdminPanel();
-            else await showLevelSelect();
+        const u = await dbGet('users', user);
+        if (!u || u.password !== pass) {
+            errorEl.textContent = '⚠️ اسم المستخدم أو كلمة المرور خطأ';
+            errorEl.style.display = 'block';
             return;
         }
-        // try IndexedDB again
-        delete loginAttempts[user];
-        currentUser = { username: 'admin', name: 'المدير', role: 'admin' };
         errorEl.style.display = 'none';
-        document.getElementById('authScreen').style.display = 'none';
-        currentLevel = null;
-        startInactivityTimer();
-        await showAdminPanel();
+        enterApp(u);
     } catch(e) {
-        currentUser = { username: 'admin', name: 'المدير', role: 'admin' };
-        errorEl.style.display = 'none';
-        document.getElementById('authScreen').style.display = 'none';
-        currentLevel = null;
-        startInactivityTimer();
-        await showAdminPanel();
+        errorEl.textContent = '⚠️ خطأ: ' + e.message;
+        errorEl.style.display = 'block';
     }
 }
 
-// ==================== Auth ====================
-// ==================== Inactivity Timer ====================
-let inactivityTimer = null;
-
-function resetInactivityTimer() {
-    if (inactivityTimer) clearTimeout(inactivityTimer);
-    if (currentUser) inactivityTimer = setTimeout(() => { showToast('⏰ خروج تلقائي بسبب عدم النشاط'); logout(); }, 1800000);
+function enterApp(user) {
+    loggedIn = true;
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('appScreen').style.display = 'block';
+    document.getElementById('userLabel').textContent = '👋 مرحباً ' + user.name;
+    loadStudents();
 }
 
-function startInactivityTimer() {
-    ['click','keydown','mousemove','touchstart','scroll'].forEach(e => document.addEventListener(e, resetInactivityTimer, {passive:true}));
-    resetInactivityTimer();
-}
-
-function showAdminHint() {
-    showToast('💡 المشرف: admin / esenza2024');
-}
-
-function logout() {
-    currentUser = null;
-    currentLevel = null;
-    document.getElementById('authScreen').style.display = 'flex';
+function doLogout() {
+    loggedIn = false;
+    document.getElementById('loginScreen').style.display = 'block';
     document.getElementById('appScreen').style.display = 'none';
-    document.getElementById('levelScreen').style.display = 'none';
-    document.getElementById('adminScreen').style.display = 'none';
-    document.getElementById('authUser').value = '';
-    document.getElementById('authPass').value = '';
-    const an = document.getElementById('authName');
-    if (an) an.value = '';
+    document.getElementById('userInput').value = '';
+    document.getElementById('passInput').value = '';
 }
 
-// ==================== Admin Panel ====================
-async function showAdminPanel() {
-    document.getElementById('authScreen').style.display = 'none';
-    document.getElementById('levelScreen').style.display = 'none';
-    document.getElementById('appScreen').style.display = 'none';
-    document.getElementById('adminScreen').style.display = 'block';
-    await renderStudentList();
-}
-
-async function renderStudentList() {
-    const all = await ldb.getAll('users');
-    const students = all.filter(u => u.username !== ADMIN_USER);
+async function loadStudents() {
+    const all = await dbGetAll('users');
+    students = all.filter(u => u.username !== 'admin');
     const el = document.getElementById('studentList');
     if (students.length === 0) {
-        el.innerHTML = '<p style="color:var(--coffee-400);font-size:0.9rem;text-align:center;padding:20px;">لا يوجد طلاب بعد</p>';
+        el.innerHTML = '<div class="empty">لا يوجد طلاب بعد</div>';
         return;
     }
     el.innerHTML = students.map(s => `
-        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--cream);">
-            <div><strong style="color:var(--coffee-700);">${s.name}</strong><br><span style="font-size:0.8rem;color:var(--coffee-400);">@${s.username}</span></div>
-            <button onclick="deleteStudent('${s.username}')" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:1.2rem;padding:4px 8px;">🗑️</button>
+        <div class="student-item">
+            <div>
+                <strong>${s.name}</strong><br>
+                <span>@${s.username}</span>
+            </div>
+            <button class="btn btn-danger" onclick="deleteStudent('${s.username}')">حذف</button>
         </div>
     `).join('');
-}
-
-async function changeAdminPass() {
-    const newPass = document.getElementById('newAdminPass').value.trim();
-    if (!newPass || newPass.length < 4) { showToast('⚠️ كلمة المرور يجب أن تكون 4 أحرف على الأقل'); return; }
-    await ldb.put('settings', { key: 'admin_pass', value: newPass });
-    const u = await ldb.get('users', ADMIN_USER);
-    u.password = newPass;
-    await ldb.put('users', u);
-    document.getElementById('newAdminPass').value = '';
-    showToast('✅ تم تغيير كلمة مرور المشرف');
 }
 
 async function addStudent() {
-    const name = document.getElementById('newStudentName').value.trim();
-    const user = document.getElementById('newStudentUser').value.trim();
-    const pass = document.getElementById('newStudentPass').value.trim();
+    const name = document.getElementById('nameInput').value.trim();
+    const user = document.getElementById('userNewInput').value.trim();
+    const pass = document.getElementById('passNewInput').value.trim();
     if (!name || !user || !pass) { showToast('⚠️ املأ جميع الحقول'); return; }
-    if (user === ADMIN_USER) { showToast('⚠️ هذا الاسم للمشرف'); return; }
-    const existing = await ldb.get('users', user);
-    if (existing) { showToast('⚠️ اسم المستخدم موجود'); return; }
-    await ldb.put('users', { username: user, password: pass, name, role: 'student', joined: new Date().toISOString() });
-    document.getElementById('newStudentName').value = '';
-    document.getElementById('newStudentUser').value = '';
-    document.getElementById('newStudentPass').value = '';
+    if (user === 'admin') { showToast('⚠️ هذا الاسم محجوز'); return; }
+    const existing = await dbGet('users', user);
+    if (existing) { showToast('⚠️ الطالب موجود'); return; }
+    await dbPut('users', { username: user, password: pass, name, role: 'student' });
+    document.getElementById('nameInput').value = '';
+    document.getElementById('userNewInput').value = '';
+    document.getElementById('passNewInput').value = '';
     showToast('✅ تم إضافة ' + name);
-    await renderStudentList();
+    loadStudents();
 }
 
 async function deleteStudent(username) {
-    if (!confirm('تأكيد حذف ' + username + '؟')) return;
-    await ldb.deleteByIndex('progress', 'username', username);
-    await ldb.deleteByIndex('quiz', 'username', username);
-    const t = ldb.db.transaction('users', 'readwrite');
-    t.objectStore('users').delete(username);
-    await new Promise(r => { t.oncomplete = r; });
+    await dbDelete('users', username);
     showToast('🗑️ تم حذف الطالب');
-    await renderStudentList();
+    loadStudents();
 }
 
-function goToLevelsFromAdmin() {
-    document.getElementById('adminScreen').style.display = 'none';
-    document.getElementById('currentLevelBadge').textContent = '👤 طالب';
-    showLevelSelect();
-}
-// ==================== Level Select ====================
-let currentLevel = null;
-
-async function showLevelSelect() {
-  currentLevel = null;
-  document.getElementById('authScreen').style.display = 'none';
-  document.getElementById('appScreen').style.display = 'none';
-  document.getElementById('levelScreen').style.display = 'block';
-
-  allProgress = await ldb.getAllByIndex('progress', 'username', currentUser.username);
-  allQuiz = await ldb.getAllByIndex('quiz', 'username', currentUser.username);
-
-  const grid = document.getElementById('levelGrid');
-  let html = '';
-  ['A','B','C'].forEach(lid => {
-    const lvl = LEVELS[lid];
-    const mods = getModulesForLevel(lid);
-    const totalLessons = mods.reduce((s,m) => s + m.lessons.length, 0);
-    const totalMods = mods.length;
-
-    const completedLessonIds = allProgress.filter(p => p.completed).map(p => p.lessonId);
-    const doneLessons = mods.reduce((s,m) => {
-      return s + m.lessons.filter((_,li) => completedLessonIds.includes(m.id + '-' + li)).length;
-    }, 0);
-
-    const doneMods = mods.filter(m => m.lessons.every((_,li) => completedLessonIds.includes(m.id + '-' + li))).length;
-    const pct = totalLessons > 0 ? Math.round(doneLessons/totalLessons*100) : 0;
-
-    html += `<div class="level-card">
-      <div class="level-head">
-        <div class="level-icon">${lvl.icon}</div>
-        <h3>${lvl.title}</h3>
-        <div class="level-badge">${lvl.desc}</div>
-      </div>
-      <div class="level-body">
-        <p>${lvl.full}</p>
-        <div class="level-progress"><div class="fill" style="width:${pct}%"></div></div>
-        <div class="level-stats">
-          <div><div class="stat-num">${totalMods}</div><div class="stat-label">موديولات</div></div>
-          <div><div class="stat-num">${totalLessons}</div><div class="stat-label">دروس</div></div>
-          <div><div class="stat-num">${pct}%</div><div class="stat-label">تقدم</div></div>
-          <div><div class="stat-num">${doneMods}</div><div class="stat-label">موديولات 🏆</div></div>
-        </div>
-      </div>
-      <button class="go-btn" onclick="enterLevel('${lid}')">${lvl.emoji} ابدأ المستوى ${lvl.title}</button>
-    </div>`;
-  });
-  grid.innerHTML = html;
-}
-
-async function enterLevel(lid) {
-  currentLevel = lid;
-  document.getElementById('levelScreen').style.display = 'none';
-  document.getElementById('appScreen').style.display = 'block';
-  document.getElementById('appScreen').style.animation = 'fadeIn 0.5s ease';
-  const lvl = LEVELS[lid];
-  document.getElementById('currentLevelBadge').textContent = lvl.icon + ' ' + lvl.title;
-  await loadDashboard();
-}
-
-// Confetti effect
-function fireConfetti() {
-    const colors = ['#D4A85A', '#E8CC8A', '#27AE60', '#E74C3C', '#3E2312', '#A67B5B'];
-    const container = document.createElement('div');
-    container.className = 'confetti-container';
-    for (let i = 0; i < 40; i++) {
-        const c = document.createElement('div');
-        c.className = 'confetti';
-        c.style.left = Math.random() * 100 + '%';
-        c.style.top = '40%';
-        c.style.background = colors[Math.floor(Math.random() * colors.length)];
-        c.style.width = (Math.random() * 6 + 4) + 'px';
-        c.style.height = (Math.random() * 6 + 4) + 'px';
-        c.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
-        c.style.animationDelay = (Math.random() * 0.5) + 's';
-        c.style.animationDuration = (Math.random() * 0.8 + 1) + 's';
-        container.appendChild(c);
-    }
-    document.body.appendChild(container);
-    setTimeout(() => container.remove(), 2500);
-}
-
-// ==================== Dashboard ====================
-async function loadDashboard() {
-    document.getElementById('dashboard').style.display = 'block';
-    document.getElementById('lessonView').style.display = 'none';
-    document.getElementById('certView').style.display = 'none';
-    document.getElementById('userNameDisplay').textContent = currentUser.name;
-
-    allProgress = await ldb.getAllByIndex('progress', 'username', currentUser.username);
-    allQuiz = await ldb.getAllByIndex('quiz', 'username', currentUser.username);
-
-    const levelMods = currentLevel ? getModulesForLevel(currentLevel) : COURSE;
-    const totalLessons = levelMods.reduce((s, m) => s + m.lessons.length, 0);
-    const completedIds = allProgress.filter(p => p.completed).map(p => p.lessonId);
-    const completedCount = new Set(completedIds).size;
-    const pct = totalLessons > 0 ? Math.round(completedCount / totalLessons * 100) : 0;
-
-    document.getElementById('statProgress').textContent = pct + '%';
-    document.getElementById('statCompleted').textContent = completedCount;
-    document.getElementById('statQuizPassed').textContent = allQuiz.filter(q => q.passed).length;
-    document.getElementById('statRemaining').textContent = totalLessons - completedCount;
-    document.getElementById('globalProgressBar').style.width = pct + '%';
-
-    let html = '';
-    let overallCompleted = true;
-
-    levelMods.forEach((mod, mi) => {
-        const modProgress = allProgress.filter(p => p.moduleId === mod.id);
-        const modDone = mod.lessons.every((_, li) => modProgress.some(p => p.lessonId === `${mod.id}-${li}` && p.completed));
-        const quizPassed = allQuiz.some(q => q.moduleId === mod.id && q.passed);
-        if (!modDone) overallCompleted = false;
-
-        const bgImages = [
-            'https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=200&q=60',
-            'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=200&q=60',
-            'https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?w=200&q=60',
-            'https://images.unsplash.com/photo-1514432324607-a09d9b4aefda?w=200&q=60',
-            'https://images.unsplash.com/photo-1504630083234-14187a9df0f5?w=200&q=60'
-        ];
-
-        html += `<div class="module-card ${modDone ? 'completed' : ''}" onclick="openLesson(${mi}, 0)">
-            <div class="module-side">
-                <img class="bg-img" src="${bgImages[mi % bgImages.length]}" alt="" loading="lazy">
-                <div class="overlay"></div>
-                <div class="module-icon">${mod.icon}</div>
-                <div class="module-num">الموديول ${mi+1}</div>
-            </div>
-            <div class="info">
-                <h4>${mod.title}</h4>
-                <p>${mod.desc} — ${mod.lessons.length} دروس</p>
-                <div class="lessons-preview">
-                    ${mod.lessons.map((_, li) => {
-                        const done = modProgress.some(p => p.lessonId === `${mod.id}-${li}` && p.completed);
-                        return `<span class="dot ${done ? 'done' : ''}"></span>`;
-                    }).join('')}
-                </div>
-                <span class="quiz-btn ${quizPassed ? 'passed' : ''}" onclick="event.stopPropagation();openQuiz(${mi})">
-                    ${quizPassed ? '✅' : '📝'} اختبار الموديول
-                </span>
-            </div>
-            <div class="badge-wrap">
-                <div class="badge ${modDone ? 'done' : ''}">
-                    ${modDone ? '✅ مكتمل' : `${mod.lessons.filter((_, li) => modProgress.some(p => p.lessonId === `${mod.id}-${li}` && p.completed)).length}/${mod.lessons.length}`}
-                </div>
-            </div>
-        </div>`;
-    });
-    document.getElementById('modulesList').innerHTML = html;
-
-    if (overallCompleted && totalLessons > 0) {
-        const allQuizPassed = levelMods.every(m => allQuiz.some(q => q.moduleId === m.id && q.passed));
-        if (allQuizPassed) {
-            document.getElementById('modulesList').insertAdjacentHTML('beforeend',
-                `<div class="cert-cta">
-                    <button onclick="showCertificate()">🎓 استلام شهادة ${LEVELS[currentLevel]?.title || ''}</button>
-                </div>`);
-        } else {
-            document.getElementById('modulesList').insertAdjacentHTML('beforeend',
-                `<div style="text-align:center;margin:24px;padding:16px;background:#fde8e8;border-radius:8px;color:var(--red);font-size:0.9rem;">
-                ⚠️ أكملت كل الدروس! تأكد من اجتياز اختبارات جميع الموديولات للحصول على الشهادة.
-                </div>`);
-        }
-    }
-
-    document.getElementById('userDisplay').textContent = `☕ ${currentUser.name}`;
-}
-
-// ==================== Lessons ====================
-const lessonBgImages = [
-    'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&q=80',
-    'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=600&q=80',
-    'https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=600&q=80',
-    'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=600&q=80',
-    'https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?w=600&q=80',
-];
-
-function openLesson(modIdx, lesIdx) {
-    const mods = (currentLevel ? getModulesForLevel(currentLevel) : COURSE);
-    const mod = mods[modIdx];
-    const les = mod.lessons[lesIdx];
-    const el = document.getElementById('lessonContent');
-
-    const isCompleted = allProgress.some(p => p.lessonId === `${mod.id}-${lesIdx}` && p.completed);
-    const hasPrev = lesIdx > 0;
-    const hasNext = lesIdx < mod.lessons.length - 1;
-
-    el.innerHTML = `
-        <div class="lesson-hero">
-            <img src="${lessonBgImages[modIdx % lessonBgImages.length]}" alt="">
-            <div class="hero-overlay"></div>
-            <div class="hero-text">
-                <div class="breadcrumb">${mod.icon} ${mod.title} — درس ${lesIdx + 1} من ${mod.lessons.length}</div>
-                <h2>${les.title}</h2>
-            </div>
-        </div>
-        <div class="lesson-body-wrap">
-            <div class="back" onclick="backToDashboard()">⬅ الرجوع للوحة</div>
-            <div class="content">${les.body}</div>
-            <div class="refs">
-                <strong>📚 تعلم أكثر:</strong>
-                <a href="https://sca.coffee" target="_blank">SCA</a> ·
-                <a href="https://baristahustle.com" target="_blank">Barista Hustle</a> ·
-                <a href="https://worldcoffeeresearch.org" target="_blank">World Coffee Research</a> ·
-                <a href="https://coffeecollective.dk" target="_blank">Coffee Collective</a>
-            </div>
-            <div class="lesson-actions">
-                ${hasPrev ? `<button class="btn-prev" onclick="openLesson(${modIdx}, ${lesIdx - 1})">⬅ الدرس السابق</button>` : ''}
-                <button class="btn-complete" id="completeBtn" onclick="completeLesson(${modIdx}, ${lesIdx})" ${isCompleted ? 'disabled' : ''}>
-                    ${isCompleted ? '✅ تم الإكمال' : '✔ أكملت هذا الدرس'}
-                </button>
-                ${hasNext ? `<button class="btn-next" onclick="openLesson(${modIdx}, ${lesIdx + 1})">الدرس التالي ⬅</button>` : ''}
-                ${!hasNext ? `<button class="btn-next" onclick="openQuiz(${modIdx})">📝 اختبار الموديول ⬅</button>` : ''}
-            </div>
-        </div>
-    `;
-
-    document.getElementById('dashboard').style.display = 'none';
-    document.getElementById('lessonView').style.display = 'block';
-    document.getElementById('certView').style.display = 'none';
-    window.scrollTo(0, 0);
-}
-
-async function completeLesson(modIdx, lesIdx) {
-    const mods = (currentLevel ? getModulesForLevel(currentLevel) : COURSE);
-    const mod = mods[modIdx];
-    const lesId = `${mod.id}-${lesIdx}`;
-    if (allProgress.some(p => p.lessonId === lesId && p.completed)) return;
-    try {
-        await ldb.put('progress', {
-            username: currentUser.username,
-            moduleId: mod.id,
-            lessonId: lesId,
-            lessonTitle: mod.lessons[lesIdx].title,
-            completed: true,
-            completedAt: new Date().toISOString()
-        });
-        allProgress.push({ lessonId: lesId, moduleId: mod.id, completed: true });
-        showToast('✅ تم حفظ التقدم');
-        document.getElementById('completeBtn').disabled = true;
-        document.getElementById('completeBtn').textContent = '✅ تم الإكمال';
-        fireConfetti();
-    } catch(e) { showToast('❌ خطأ في الحفظ'); }
-}
-
-function backToDashboard() { loadDashboard(); window.scrollTo(0,0); }
-
-// ==================== Quiz ====================
-function openQuiz(modIdx) {
-    const mods = (currentLevel ? getModulesForLevel(currentLevel) : COURSE);
-    const mod = mods[modIdx];
-    if (!mod.quiz) { showToast('⚠️ لا يوجد اختبار لهذا الموديول'); return; }
-
-    const quizPassed = allQuiz.some(q => q.moduleId === mod.id && q.passed);
-    const el = document.getElementById('lessonContent');
-
-    let questionsHtml = mod.quiz.map((q, qi) => `
-        <div class="quiz-question" id="qq-${modIdx}-${qi}">
-            <div class="q-text">${qi+1}. ${q.q}</div>
-            ${q.opts.map((o, oi) => `
-                <div class="quiz-option" id="qo-${modIdx}-${qi}-${oi}" onclick="selectQuizOption(${modIdx}, ${qi}, ${oi})">
-                    <span class="letter">${'ABCD'[oi]}</span>
-                    <span>${o}</span>
-                </div>
-            `).join('')}
-        </div>
-    `).join('');
-
-    el.innerHTML = `
-        <div class="lesson-hero" style="background:linear-gradient(135deg,var(--coffee-900),var(--coffee-600));height:140px;">
-            <div class="hero-text">
-                <div class="breadcrumb">${mod.icon} ${mod.title}</div>
-                <h2>📝 اختبار الموديول</h2>
-            </div>
-        </div>
-        <div class="lesson-body-wrap">
-            <div class="back" onclick="backToDashboard()">⬅ الرجوع للوحة</div>
-            <p style="color:var(--coffee-500);margin-bottom:16px;">اختر الإجابة الصحيحة لكل سؤال. لازم تجيب 80% عشان تجتاز.</p>
-            ${quizPassed ? `<div style="padding:12px 16px;background:#d4edda;color:var(--green);border-radius:8px;margin-bottom:16px;font-weight:700;">✅ لقد اجتزت هذا الاختبار بنجاح!</div>` : ''}
-            <div class="quiz-section">
-                <h3>${mod.icon} ${mod.title}</h3>
-                <div class="quiz-status">
-                    ${mod.quiz.map((_, qi) => `<div class="q-dot" id="qdot-${modIdx}-${qi}">${qi+1}</div>`).join('')}
-                </div>
-                ${questionsHtml}
-                <div class="quiz-result" id="quizResult-${modIdx}"></div>
-                <div class="lesson-actions" style="padding:0;margin-top:16px;background:none;">
-                    <button class="btn-gold" onclick="submitQuiz(${modIdx})" ${quizPassed ? 'disabled style="opacity:0.4"' : ''}>🔍 تصحيح الإجابات</button>
-                    <button class="btn-prev" onclick="backToDashboard()">⬅ الرجوع</button>
-                </div>
-            </div>
-        </div>
-    `;
-
-    document.getElementById('dashboard').style.display = 'none';
-    document.getElementById('lessonView').style.display = 'block';
-    document.getElementById('certView').style.display = 'none';
-    window.scrollTo(0, 0);
-}
-
-function selectQuizOption(modIdx, qi, oi) {
-    const container = document.getElementById(`qq-${modIdx}-${qi}`);
-    container.querySelectorAll('.quiz-option').forEach(el => el.classList.remove('selected'));
-    document.getElementById(`qo-${modIdx}-${qi}-${oi}`).classList.add('selected');
-    document.getElementById(`qdot-${modIdx}-${qi}`).classList.add('answered');
-}
-
-async function submitQuiz(modIdx) {
-    const mods = (currentLevel ? getModulesForLevel(currentLevel) : COURSE);
-    const mod = mods[modIdx];
-    let correct = 0;
-
-    mod.quiz.forEach((q, qi) => {
-        const options = document.querySelectorAll(`#qq-${modIdx}-${qi} .quiz-option`);
-        let selected = -1;
-        options.forEach((o, oi) => { if (o.classList.contains('selected')) selected = oi; });
-
-        options.forEach((o, oi) => {
-            o.classList.remove('selected', 'correct', 'wrong');
-            o.style.cursor = 'default';
-            o.onclick = null;
-            if (oi === q.ans) o.classList.add('correct');
-            else if (oi === selected) o.classList.add('wrong');
-        });
-
-        if (selected === q.ans) correct++;
-    });
-
-    const totalQs = mod.quiz.length;
-    const passThreshold = Math.ceil(totalQs * 0.8);
-    const passed = correct >= passThreshold;
-    const resultEl = document.getElementById(`quizResult-${modIdx}`);
-    resultEl.className = `quiz-result ${passed ? 'pass' : 'fail'}`;
-    resultEl.innerHTML = passed
-        ? `<div class="result-icon">🎉</div><div class="result-score">ممتاز! ${correct}/${totalQs}</div><div style="margin-top:8px;font-size:0.95rem;">اجتزت الاختبار بنجاح!</div>`
-        : `<div class="result-icon">😅</div><div class="result-score">${correct}/${totalQs}</div><div style="margin-top:8px;font-size:0.95rem;">تحتاج ${passThreshold}/${totalQs} عشان تجتاز. حاول مرة أخرى.</div>`;
-
-    try {
-        await ldb.deleteByIndex('quiz', 'username', currentUser.username);
-    } catch(_) {}
-    await ldb.put('quiz', {
-        username: currentUser.username,
-        moduleId: mod.id,
-        score: correct,
-        passed,
-        attemptedAt: new Date().toISOString()
-    });
-
-    if (passed) { showToast('🎉 اجتزت الاختبار!'); fireConfetti(); }
-}
-
-// ==================== Certificate ====================
-function showCertificate() {
-    document.getElementById('dashboard').style.display = 'none';
-    document.getElementById('lessonView').style.display = 'none';
-    document.getElementById('certView').style.display = 'block';
-    document.getElementById('certName').textContent = currentUser.name;
-    const lvl = currentLevel ? LEVELS[currentLevel] : null;
-    document.getElementById('certLevelName').textContent = lvl ? lvl.icon + ' ' + lvl.title : 'تدريب الباريستا';
-    document.getElementById('certDate').textContent = new Date().toLocaleDateString('ar-EG', { year:'numeric', month:'long', day:'numeric' });
-    fireConfetti();
-}
-
-function printCert() {
-    const name = currentUser.name;
-    const date = new Date().toLocaleDateString('ar-EG', { year:'numeric', month:'long', day:'numeric' });
-    const lvl = currentLevel ? LEVELS[currentLevel] : null;
-    const lvlName = lvl ? lvl.icon + ' ' + lvl.title : 'تدريب الباريستا';
-    const win = window.open('', '_blank', 'width=600,height=800');
-    win.document.write(`
-        <html dir="rtl"><head><meta charset="utf-8">
-        <style>
-            @page { margin:20mm; }
-            body { font-family:'Tajawal','Segoe UI',sans-serif; text-align:center; direction:rtl; padding:40px; background:#f7f2eb; }
-            .cert { border:3px double #D4A85A; border-radius:16px; padding:40px; background:white; box-shadow:0 8px 40px rgba(0,0,0,0.1); }
-            h1 { font-family:serif; color:#3E2312; font-size:2rem; }
-            .seal { font-size:4rem; margin:16px 0; }
-            .name { font-size:1.8rem; color:#D4A85A; font-weight:900; margin:12px 0; }
-            .date { color:#6D4C41; font-size:0.9rem; }
-        </style>
-        </head><body>
-        <div class="cert">
-            <h1>Esenza Academy</h1>
-            <div class="seal">☕</div>
-            <p style="font-size:1.1rem;color:#6D4C41;">يشهد بأن</p>
-            <div class="name">${name}</div>
-            <p style="font-size:1rem;color:#6D4C41;">قد أتم بنجاح دورة</p>
-            <p style="font-size:1.3rem;font-weight:700;color:#3E2312;margin:8px 0;">${lvlName}</p>
-            <div class="date">${date}</div>
-            <p style="margin-top:20px;font-size:0.85rem;color:#A67B5B;">هذا الكورس معتمد على معايير SCA — Specialty Coffee Association</p>
-        </div>
-        <script>window.onload=function(){window.print()};<${''}/script>
-        </body></html>
-    `);
-    win.document.close();
-}
-
-// ==================== Init ====================
-document.addEventListener('DOMContentLoaded', async () => {
-    try { await ldb.init(); console.log('✅ Academy DB ready'); } catch(e) { console.error('DB error:', e); }
-    // Auto-login as admin
-    currentUser = { username: 'admin', name: 'المدير', role: 'admin' };
-    document.getElementById('authScreen').style.display = 'none';
-    currentLevel = null;
-    startInactivityTimer();
-    await showAdminPanel();
+document.getElementById('loginBtn').addEventListener('click', handleLogin);
+document.getElementById('userInput').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') document.getElementById('passInput').focus();
 });
+document.getElementById('passInput').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') handleLogin();
+});
+
+seedAdmin();
 </script>
 </body>
 </html>
