@@ -119,52 +119,72 @@ hdr p{color:#a67b5b;position:relative}
 .ex .eq .eo.c{border-color:#27ae60;background:#e8f5e9}
 .ex .eq .eo.w{border-color:#e74c3c;background:#fde8e8}
 /* ===== Certificate ===== */
-.cert{max-width:720px;margin:0 auto;background:white;border-radius:4px;overflow:hidden;box-shadow:0 12px 80px rgba(0,0,0,.2);position:relative;padding:10px}
-.cert .ci{background:linear-gradient(135deg,#fcf9f5,#f8f0e6);padding:48px 40px 40px;text-align:center;position:relative;z-index:2;border:3px double #d4a85a;border-radius:4px;box-shadow:inset 0 0 0 1px rgba(212,168,90,.2)}
-.cert .ci::before{content:'☕';position:absolute;top:10px;left:20px;font-size:2rem;opacity:.08;transform:rotate(-15deg)}
-.cert .ci::after{content:'☕';position:absolute;bottom:10px;right:20px;font-size:2rem;opacity:.08;transform:rotate(15deg)}
-.cert .ci .corner{position:absolute;width:30px;height:30px;border-color:#d4a85a;border-style:solid}
-.cert .ci .corner-tl{top:16px;right:16px;border-width:3px 3px 0 0}
-.cert .ci .corner-tr{top:16px;left:16px;border-width:3px 0 0 3px}
-.cert .ci .corner-bl{bottom:16px;right:16px;border-width:0 3px 3px 0}
-.cert .ci .corner-br{bottom:16px;left:16px;border-width:0 0 3px 3px}
-.cert .ci .c-icon{width:56px;height:56px;margin:0 auto 10px;position:relative}
-.cert .ci .c-icon .outer{position:absolute;inset:0;border-radius:50%;border:2px solid #d4a85a;animation:pp 3s ease-in-out infinite}
-.cert .ci .c-icon .outer::after{content:'';position:absolute;inset:-6px;border-radius:50%;border:1px solid rgba(212,168,90,.2)}
-.cert .ci .c-icon .inner{position:absolute;inset:6px;border-radius:50%;background:linear-gradient(135deg,#d4a85a,#b8922e);display:flex;align-items:center;justify-content:center;font-size:1.3rem;color:white;box-shadow:0 2px 10px rgba(212,168,90,.3)}
-.cert .ci .cx{border:0;padding:0;margin:0;font-size:0;height:0}
-.cert .ci .ctop{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:4px}
-.cert .ci .ctop::before,.cert .ci .ctop::after{content:'';flex:1;max-width:80px;height:1px;background:linear-gradient(90deg,transparent,#d4a85a)}
+.cert{max-width:740px;margin:0 auto;background:white;border-radius:2px;overflow:hidden;box-shadow:0 16px 100px rgba(0,0,0,.25);position:relative;padding:14px}
+.cert .ci{background:linear-gradient(180deg,#fefcf9 0%,#f8f0e6 40%,#f5ebe0 100%);padding:48px 40px 36px;text-align:center;position:relative;z-index:2;border:1px solid #d4a85a;border-radius:2px;box-shadow:inset 0 0 0 4px rgba(212,168,90,.08),inset 0 0 0 8px rgba(212,168,90,.04)}
+.cert .ci .bg-pat{position:absolute;inset:0;background-image:radial-gradient(circle at 25% 25%,rgba(212,168,90,.04) 1px,transparent 1px);background-size:30px 30px;pointer-events:none;z-index:0}
+/* Ornate corners — Italian style */
+.cert .ci .corn{position:absolute;width:50px;height:50px;z-index:3}
+.cert .ci .corn-tl{top:12px;right:12px;border-top:3px solid #d4a85a;border-right:3px solid #d4a85a}
+.cert .ci .corn-tl::after{content:'❦';position:absolute;top:-10px;right:-10px;font-size:.9rem;color:#d4a85a;opacity:.6}
+.cert .ci .corn-tr{top:12px;left:12px;border-top:3px solid #d4a85a;border-left:3px solid #d4a85a}
+.cert .ci .corn-tr::after{content:'❦';position:absolute;top:-10px;left:-10px;font-size:.9rem;color:#d4a85a;opacity:.6}
+.cert .ci .corn-bl{bottom:12px;right:12px;border-bottom:3px solid #d4a85a;border-right:3px solid #d4a85a}
+.cert .ci .corn-bl::after{content:'❦';position:absolute;bottom:-10px;right:-10px;font-size:.9rem;color:#d4a85a;opacity:.6}
+.cert .ci .corn-br{bottom:12px;left:12px;border-bottom:3px solid #d4a85a;border-left:3px solid #d4a85a}
+.cert .ci .corn-br::after{content:'❦';position:absolute;bottom:-10px;left:-10px;font-size:.9rem;color:#d4a85a;opacity:.6}
+/* Coffee branch decorations */
+.cert .ci .branch{position:absolute;display:flex;align-items:center;gap:3px;font-size:1rem;opacity:.15;pointer-events:none;z-index:0}
+.cert .ci .branch-l{top:50%;right:8px;transform:translateY(-50%) rotate(0deg);flex-direction:column}
+.cert .ci .branch-r{top:50%;left:8px;transform:translateY(-50%) rotate(0deg);flex-direction:column}
+/* Emblem */
+.cert .ci .embl{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:6px;position:relative;z-index:1}
+.cert .ci .embl .em-line{width:60px;height:1px;background:linear-gradient(90deg,transparent,#d4a85a)}
+.cert .ci .embl .em-line:last-child{background:linear-gradient(90deg,#d4a85a,transparent)}
+.cert .ci .embl .em-icon{width:48px;height:48px;border-radius:50%;border:2px solid #d4a85a;display:flex;align-items:center;justify-content:center;position:relative;background:linear-gradient(135deg,#fff8e1,#fff);box-shadow:0 0 0 4px rgba(212,168,90,.1)}
+.cert .ci .embl .em-icon .em-in{font-size:1.2rem;animation:pp 3s ease-in-out infinite}
+.cert .ci .ctop{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:2px;position:relative;z-index:1}
+.cert .ci .ctop::before,.cert .ci .ctop::after{content:'';flex:1;max-width:60px;height:1px;background:linear-gradient(90deg,transparent,#d4a85a)}
 .cert .ci .ctop::after{background:linear-gradient(90deg,#d4a85a,transparent)}
-.cert .ci .ctop span{color:#d4a85a;font-size:.8rem;letter-spacing:3px;text-transform:uppercase}
-.cert .ci .an{font-size:1.2rem;font-weight:900;color:#3e2312;letter-spacing:2px;font-family:Georgia,serif}
-.cert .ci .sub{color:#a67b5b;font-size:.8rem;margin-bottom:6px}
-.cert .ci .certh{margin:8px 0 4px;position:relative}
-.cert .ci .certh .h-gold{display:inline-block;background:linear-gradient(135deg,#d4a85a,#b8922e);color:white;padding:6px 36px;border-radius:4px;font-size:1.1rem;font-weight:700;letter-spacing:2px;box-shadow:0 2px 8px rgba(212,168,90,.3)}
-.cert .ci .cname-wrap{margin:14px 0;position:relative;padding:6px 0}
-.cert .ci .cname-wrap::before{content:'—';position:absolute;top:-2px;left:50%;transform:translateX(-50%);color:#d4a85a;font-size:.8rem}
-.cert .ci .cname-wrap::after{content:'—';position:absolute;bottom:-2px;left:50%;transform:translateX(-50%);color:#d4a85a;font-size:.8rem}
+.cert .ci .ctop span{color:#d4a85a;font-size:.7rem;letter-spacing:3px;text-transform:uppercase;font-weight:600}
+.cert .ci .an{font-size:1.1rem;font-weight:900;color:#3e2312;letter-spacing:2px;font-family:Georgia,serif;position:relative;z-index:1}
+.cert .ci .sub{color:#a67b5b;font-size:.78rem;margin-bottom:4px;position:relative;z-index:1}
+.cert .ci .certh{margin:10px 0 6px;position:relative;z-index:1}
+.cert .ci .certh .h-gold{display:inline-block;background:linear-gradient(135deg,#b8922e,#d4a85a,#b8922e);color:white;padding:5px 32px;font-size:1rem;font-weight:700;letter-spacing:2px;box-shadow:0 2px 12px rgba(212,168,90,.3);position:relative}
+.cert .ci .certh .h-gold::before{content:'❦';position:absolute;right:-16px;top:50%;transform:translateY(-50%);font-size:.7rem;color:rgba(255,255,255,.5)}
+.cert .ci .certh .h-gold::after{content:'❦';position:absolute;left:-16px;top:50%;transform:translateY(-50%);font-size:.7rem;color:rgba(255,255,255,.5)}
+/* Decorative divider */
+.cert .ci .divider{display:flex;align-items:center;justify-content:center;gap:4px;margin:6px auto;max-width:320px;position:relative;z-index:1}
+.cert .ci .divider .d-line{flex:1;height:1px;background:linear-gradient(90deg,transparent,#d4a85a)}
+.cert .ci .divider .d-line:last-child{background:linear-gradient(90deg,#d4a85a,transparent)}
+.cert .ci .divider .d-icon{color:#d4a85a;font-size:.7rem}
+.cert .ci .cname-wrap{margin:12px 0;position:relative;padding:8px 0;z-index:1}
+.cert .ci .cname-wrap::before{content:'꧁';position:absolute;top:-4px;left:50%;transform:translateX(-50%);color:#d4a85a;font-size:.7rem;opacity:.5}
+.cert .ci .cname-wrap::after{content:'꧂';position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);color:#d4a85a;font-size:.7rem;opacity:.5}
 .cert .ci .cname{font-size:2rem;font-weight:900;color:#1a0f0a;font-family:Georgia,serif;letter-spacing:1px;line-height:1.2}
-.cert .ci .cbody{color:#6d4c41;font-size:.9rem;line-height:1.8;max-width:400px;margin:0 auto 10px}
+.cert .ci .cbody{color:#6d4c41;font-size:.88rem;line-height:1.8;max-width:420px;margin:0 auto 8px;position:relative;z-index:1}
 .cert .ci .cbody strong{color:#3e2312}
-.cert .ci .clevel{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#fff8e1,#fff);padding:5px 18px;border-radius:3px;font-weight:600;color:#3e2312;margin:4px 0 10px;font-size:.85rem;border:1px solid #d4a85a;letter-spacing:.5px}
-.cert .ci .clevel .lv-icon{font-size:1.2rem}
-.cert .ci .cscore{margin:4px 0;font-size:.85rem;color:#6d4c41}
+.cert .ci .clevel{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#fff8e1,#fff);padding:4px 16px;border-radius:2px;font-weight:600;color:#3e2312;margin:4px 0 8px;font-size:.82rem;border:1px solid #d4a85a;position:relative;z-index:1}
+.cert .ci .clevel .lv-icon{font-size:1.1rem}
+.cert .ci .cscore{margin:2px 0;font-size:.82rem;color:#6d4c41;position:relative;z-index:1}
 .cert .ci .cscore strong{color:#3e2312}
-.cert .ci .csb{height:5px;background:#ede0d4;border-radius:3px;margin:6px auto 4px;overflow:hidden;max-width:280px}
-.cert .ci .csb .csf{height:100%;background:linear-gradient(90deg,#d4a85a,#e8cc8a);border-radius:3px;transition:width 1s ease}
-.cert .ci .csig{display:flex;align-items:flex-end;justify-content:center;gap:32px;margin:14px 0 6px;padding:12px 0 0;position:relative}
-.cert .ci .csig .csig-box{display:flex;flex-direction:column;align-items:center;gap:2px;flex:1;max-width:180px}
+.cert .ci .csb{height:4px;background:#ede0d4;border-radius:2px;margin:6px auto;overflow:hidden;max-width:240px;position:relative;z-index:1}
+.cert .ci .csb .csf{height:100%;background:linear-gradient(90deg,#d4a85a,#e8cc8a);border-radius:2px;transition:width 1s ease}
+.cert .ci .csig{display:flex;align-items:flex-end;justify-content:center;gap:28px;margin:12px 0 4px;padding:10px 0 0;position:relative;z-index:1}
+.cert .ci .csig .csig-box{display:flex;flex-direction:column;align-items:center;gap:2px;flex:1;max-width:160px}
 .cert .ci .csig .csig-line{width:100%;height:1px;border-top:2px solid #3e2312;margin-bottom:2px}
-.cert .ci .csig .csig-label{font-size:.65rem;color:#a67b5b}
-.cert .ci .csig .cstamp-box{flex:0 0 auto;max-width:100px}
-.cert .ci .csig .cstamp{width:72px;height:72px;border-radius:50%;border:3px double #d4a85a;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#fff8e1,#fff);box-shadow:0 0 0 4px white,0 0 0 5px rgba(212,168,90,.3);position:relative;margin-top:-20px}
+.cert .ci .csig .csig-label{font-size:.62rem;color:#a67b5b}
+.cert .ci .csig .cstamp-box{flex:0 0 auto;max-width:90px}
+.cert .ci .csig .cstamp{width:68px;height:68px;border-radius:50%;border:3px double #d4a85a;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#fff8e1,#fff);box-shadow:0 0 0 4px white,0 0 0 5px rgba(212,168,90,.25);position:relative;margin-top:-16px}
 .cert .ci .csig .cstamp .cstamp-in{font-size:.5rem;color:#3e2312;text-align:center;line-height:1.2;font-weight:700}
-.cert .ci .cft{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:10px;padding-top:10px;border-top:1px solid #ede0d4}
-.cert .ci .cft .cdate{color:#a67b5b;font-size:.72rem;display:flex;align-items:center;gap:4px}
-.cert .ci .cft .csep{color:#d4a85a;font-size:.5rem}
-.cert .ci .cm{color:#c4b5a5;font-size:.6rem;margin-top:12px;letter-spacing:1px;display:flex;align-items:center;justify-content:center;gap:6px}
-.cert .ci .cm span{opacity:.5}
+.cert .ci .cft{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:8px;padding-top:8px;border-top:1px solid rgba(212,168,90,.2);position:relative;z-index:1}
+.cert .ci .cft .cdate{color:#a67b5b;font-size:.7rem;display:flex;align-items:center;gap:4px}
+.cert .ci .cft .csep{color:#d4a85a;font-size:.45rem}
+.cert .ci .cphrase{margin:6px 0 0;padding:6px 16px;border-top:1px solid rgba(212,168,90,.15);position:relative;z-index:1;display:flex;align-items:center;justify-content:center;gap:6px}
+.cert .ci .cphrase .ph-text{font-size:.72rem;color:#8d6e63;font-style:italic;letter-spacing:.3px;font-family:Georgia,serif}
+.cert .ci .cphrase .ph-sep{color:#d4a85a;font-size:.4rem}
+.cert .ci .cphrase .ph-brand{font-size:.65rem;color:#3e2312;font-weight:700;letter-spacing:1px}
+.cert .ci .cm{color:#c4b5a5;font-size:.55rem;margin-top:8px;letter-spacing:1px;display:flex;align-items:center;justify-content:center;gap:6px;position:relative;z-index:1}
+.cert .ci .cm span{opacity:.4}
 .cnt{background:white;border-radius:16px;padding:24px;box-shadow:0 2px 12px rgba(0,0,0,.04)}
 .cnt .cci{display:flex;align-items:center;gap:16px;padding:14px;border:2px solid #ede0d4;border-radius:12px;margin-bottom:12px;transition:.3s;cursor:pointer}
 .cnt .cci:hover{border-color:#d4a85a;background:#faf5ef}
@@ -196,13 +216,14 @@ hdr p{color:#a67b5b;position:relative}
 .mc:nth-child(9){animation-delay:.8s}
 .ls-sc{animation:fi .5s ease}
 .ex{animation:fi .5s ease}
-.cert .ci .c-icon .inner{animation:pp 3s ease-in-out infinite}
+.cert .ci .embl .em-in{animation:pp 3s ease-in-out infinite}
 .btn{position:relative;overflow:hidden}
 .btn::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent);background-size:200% 100%;animation:sh 3s ease-in-out infinite;pointer-events:none}
 .tb{animation:sd .3s ease both}
 .tb:nth-child(2){animation-delay:.05s}
 .tb:nth-child(3){animation-delay:.1s}
 .tb:nth-child(4){animation-delay:.15s}
+.tb:nth-child(5){animation-delay:.2s}
 .lc .hd .ic{animation:fl 4s ease-in-out infinite}
 .cci{animation:ru .4s ease both}
 .cci:nth-child(2){animation-delay:.1s}
@@ -213,8 +234,8 @@ hdr p{color:#a67b5b;position:relative}
 .ln{transition:.3s}
 hdr{animation:sd .5s ease}
 .cert .cf span{animation:fl 3s ease-in-out infinite}
-@media(max-width:600px){.c{padding:12px}.lc .hd{min-height:110px}.lc .hd .ic{font-size:2.2rem}.mc .mh{flex-direction:column}.mc .msd{width:100%;min-height:60px;flex-direction:row;padding:8px}.mc .msd .mnm{display:none}.ls-sc .ls-b{padding:20px}.ls-sc .ls-h .hc{padding:24px 20px;min-height:140px}.ls-sc .ls-h .hc h2{font-size:1.2rem}.ls-c .img-row{grid-template-columns:1fr}.ex{padding:16px}.ex .eq{padding:14px}.cert{padding:6px}.cert .ci{padding:28px 16px 24px}.cert .ci .cname{font-size:1.5rem}.cert .ci .ctop span{font-size:.6rem;letter-spacing:1px}.cert .ci .c-icon{width:40px;height:40px}.cert .ci .c-icon .inner{font-size:1rem}.cert .ci .an{font-size:1rem}.cert .ci .certh .h-gold{font-size:.9rem;padding:4px 20px}.cert .ci .csig{gap:16px}.cert .ci .csig .csig-line{width:80px}.cert .ci .csig .cstamp{width:56px;height:56px;margin-top:-12px}.cert .ci .csig .cstamp .cstamp-in{font-size:.4rem}}
-@media print{body{background:white}hdr,.tbs,.btn,.tb,.ap,.nav-b,.lg,.sf,.ex .btn{display:none!important}.c{max-width:100%;padding:0}.cert{box-shadow:none;padding:0;margin:20px auto}.cert .ci{padding:40px 36px;page-break-inside:avoid}.cert .ci .c-icon .outer{animation:none}.cert .ci .cstamp{animation:none}.cert .ci .c-icon .inner{animation:none}}
+@media(max-width:600px){.c{padding:12px}.lc .hd{min-height:110px}.lc .hd .ic{font-size:2.2rem}.mc .mh{flex-direction:column}.mc .msd{width:100%;min-height:60px;flex-direction:row;padding:8px}.mc .msd .mnm{display:none}.ls-sc .ls-b{padding:20px}.ls-sc .ls-h .hc{padding:24px 20px;min-height:140px}.ls-sc .ls-h .hc h2{font-size:1.2rem}.ls-c .img-row{grid-template-columns:1fr}.ex{padding:16px}.ex .eq{padding:14px}.cert{padding:6px}.cert .ci{padding:28px 12px 20px}.cert .ci .cname{font-size:1.3rem}.cert .ci .embl .em-icon{width:36px;height:36px}.cert .ci .embl .em-icon .em-in{font-size:.9rem}.cert .ci .embl .em-line{width:30px}.cert .ci .ctop span{font-size:.55rem;letter-spacing:1px}.cert .ci .an{font-size:.9rem}.cert .ci .certh .h-gold{font-size:.8rem;padding:4px 16px}.cert .ci .certh .h-gold::before,.cert .ci .certh .h-gold::after{display:none}.cert .ci .csig{gap:12px}.cert .ci .csig .csig-line{width:70px}.cert .ci .csig .cstamp{width:50px;height:50px;margin-top:-10px}.cert .ci .csig .cstamp .cstamp-in{font-size:.4rem}.cert .ci .cphrase .ph-text{font-size:.6rem}}
+@media print{body{background:white}hdr,.tbs,.btn,.tb,.ap,.nav-b,.lg,.sf,.ex .btn{display:none!important}.c{max-width:100%;padding:0}.cert{box-shadow:none;padding:0;margin:20px auto}.cert .ci{padding:40px 36px;page-break-inside:avoid}.cert .ci .embl .em-in{animation:none}.cert .ci .cstamp{animation:none}}
 @media print{body{background:white!important}hdr,.tbs,.t{display:none!important}.c{max-width:100%;padding:0}.cert{border:4px double #d4a85a!important;box-shadow:none!important;animation:none!important}.cert .ci .cs{animation:none!important}.cert .ci .btn{display:none!important}}
 </style>
 </head>
@@ -563,23 +584,26 @@ function gCert(l,n,p){
   let mo=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
   let ds=d.getDate()+' '+mo[d.getMonth()]+' '+d.getFullYear();
   let sn='ESZ-'+lv.id+'-'+d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0')+'-'+String(Math.floor(Math.random()*9999)).padStart(4,'0');
-  let grd=p>=90?'‎بامتياز (Honours)':p>=80?'جيد جداً (Very Good)':'مقبول (Pass)';
+  let grd=p>=90?'بامتياز (Honours)':p>=80?'جيد جداً (Very Good)':'مقبول (Pass)';
   return '<div class="cert" id="cert"><div class="ci">'+
-    '<div class="corner corner-tl"></div><div class="corner corner-tr"></div><div class="corner corner-bl"></div><div class="corner corner-br"></div>'+
-    '<div class="c-icon"><div class="outer"></div><div class="inner">☕</div></div>'+
+    '<div class="bg-pat"></div>'+
+    '<div class="corn corn-tl"></div><div class="corn corn-tr"></div><div class="corn corn-bl"></div><div class="corn corn-br"></div>'+
+    '<div class="embl"><span class="em-line"></span><div class="em-icon"><span class="em-in">☕</span></div><span class="em-line"></span></div>'+
     '<div class="ctop"><span>E S E N Z A &nbsp; A C A D E M Y</span></div>'+
     '<div class="an">Esenza Academy</div><div class="sub">أكاديمية إيسينزا لتدريب الباريستا &nbsp;•&nbsp; Professional Barista Training</div>'+
     '<div class="certh"><div class="h-gold">شهادة إتمام &nbsp;•&nbsp; Certificate of Completion</div></div>'+
-    '<div class="cbody"><span class="ar">نشهد بأن</span> <span class="en" style="color:#a67b5b;font-size:.8rem">— This is to certify that —</span></div>'+
+    '<div class="divider"><span class="d-line"></span><span class="d-icon">✧</span><span class="d-line"></span></div>'+
+    '<div class="cbody">نشهد بأن &nbsp;<span style="color:#a67b5b;font-size:.8rem">— This is to certify that —</span></div>'+
     '<div class="cname-wrap"><div class="cname">'+n+'</div></div>'+
-    '<div class="cbody ar">قد أكمل بنجاح متطلبات المستوى <strong>'+lv.t+'</strong><br>في برنامج تدريب الباريستا الاحترافي</div>'+
-    '<div class="cbody en" style="color:#a67b5b;font-size:.75rem;margin-top:2px">Has successfully completed the <strong>'+enT[l]+'</strong> Level<br>of the Professional Barista Training Program</div>'+
-    '<div class="clevel"><span class="lv-icon">'+lv.ic+'</span> المستوى '+lv.id+' — '+lv.t+' <span style="color:#a67b5b;font-size:.7rem">('+enT[l]+' Level)</span></div>'+
-    '<div class="cscore">'+p+'% — '+Math.round(p/100*10)+'/10 <span class="ar">صحيح</span> <span class="en" style="color:#a67b5b">| Correct</span> &nbsp;|&nbsp; '+grd+'</div>'+
+    '<div class="cbody">قد أكمل بنجاح متطلبات المستوى <strong>'+lv.t+'</strong><br>في برنامج تدريب الباريستا الاحترافي</div>'+
+    '<div class="cbody" style="color:#a67b5b;font-size:.75rem;margin-top:-2px">Has successfully completed the <strong>'+enT[l]+'</strong> Level<br>of the Professional Barista Training Program</div>'+
+    '<div class="clevel"><span class="lv-icon">'+lv.ic+'</span> المستوى '+lv.id+' — '+lv.t+' &nbsp;<span style="color:#a67b5b;font-size:.7rem">('+enT[l]+' Level)</span></div>'+
+    '<div class="cscore"><strong>'+p+'%</strong> — '+Math.round(p/100*10)+'/10 صحيح (Correct) &nbsp;|&nbsp; '+grd+'</div>'+
     '<div class="csb"><div class="csf" style="width:'+p+'%"></div></div>'+
-    '<div class="csig"><div class="csig-box"><span class="csig-line"></span><span class="csig-label">إمضاء الخبير &nbsp;•&nbsp; Examiner</span></div><div class="csig-box cstamp-box"><div class="cstamp"><div class="cstamp-in">☕<br>Esenza<br>Academy</div></div><span class="csig-label">ختم الأكاديمية &nbsp;•&nbsp; Seal</span></div></div>'+
+    '<div class="csig"><div class="csig-box"><span class="csig-line"></span><span class="csig-label">إمضاء الخبير &nbsp;•&nbsp; Examiner</span></div><div class="csig-box cstamp-box"><div class="cstamp"><div class="cstamp-in">☕<br>Esenza<br>Academy</div></div><span class="csig-label">ختم الأكاديمية &nbsp;•&nbsp; Official Seal</span></div></div>'+
     '<div class="cft"><span class="cdate">📅 '+ds+'</span><span class="csep">✦</span><span class="cdate">🔢 '+sn+'</span></div>'+
-    '<div class="cm"><span>🫘</span> Esenza Academy &nbsp;•&nbsp; أكاديمية إيسينزا &nbsp;•&nbsp; Certified Barista Training &nbsp;•&nbsp; جميع الحقوق محفوظة <span>🫘</span></div>'+
+    '<div class="cphrase"><span class="ph-text">نحب القهوة — ونحب كل اللي يحب القهوة</span><span class="ph-sep">•</span><span class="ph-brand">Esenza Academy</span></div>'+
+    '<div class="cm"><span>🫘</span> Esenza Academy &nbsp;•&nbsp; أكاديمية إيسينزا &nbsp;•&nbsp; Certified Barista Training <span>🫘</span></div>'+
     '</div></div>';
 }
 
