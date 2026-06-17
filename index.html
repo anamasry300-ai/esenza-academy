@@ -560,24 +560,28 @@ function cEx(l,n){
 
 function gCert(l,n,p){
   let lv=LV[l];
+  let enT={'A':'Foundation','B':'Professional','C':'Master'};
   let d=new Date();
-  let ds=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+  let mo=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+  let ds=d.getDate()+' '+mo[d.getMonth()]+' '+d.getFullYear();
   let sn='ESZ-'+lv.id+'-'+d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0')+'-'+String(Math.floor(Math.random()*9999)).padStart(4,'0');
+  let grd=p>=90?'‎بامتياز (Honours)':p>=80?'جيد جداً (Very Good)':'مقبول (Pass)';
   return '<div class="cert" id="cert"><div class="ci">'+
     '<div class="corner corner-tl"></div><div class="corner corner-tr"></div><div class="corner corner-bl"></div><div class="corner corner-br"></div>'+
     '<div class="c-icon"><div class="outer"></div><div class="inner">☕</div></div>'+
     '<div class="ctop"><span>E S E N Z A &nbsp; A C A D E M Y</span></div>'+
-    '<div class="an">Esenza Academy</div><div class="sub">تدريب الباريستا الاحترافي</div>'+
-    '<div class="certh"><div class="h-gold">شهادة إتمام</div></div>'+
-    '<div class="cbody">نشهد بأن</div>'+
+    '<div class="an">Esenza Academy</div><div class="sub">أكاديمية إيسينزا لتدريب الباريستا &nbsp;•&nbsp; Professional Barista Training</div>'+
+    '<div class="certh"><div class="h-gold">شهادة إتمام &nbsp;•&nbsp; Certificate of Completion</div></div>'+
+    '<div class="cbody"><span class="ar">نشهد بأن</span> <span class="en" style="color:#a67b5b;font-size:.8rem">— This is to certify that —</span></div>'+
     '<div class="cname-wrap"><div class="cname">'+n+'</div></div>'+
-    '<div class="cbody">قد أتم بنجاح المستوى <strong>'+lv.t+'</strong><br>في برنامج تدريب الباريستا الاحترافي</div>'+
-    '<div class="clevel"><span class="lv-icon">'+lv.ic+'</span> المستوى '+lv.id+' — '+lv.t+'</div>'+
-    '<div class="cscore"><strong>'+p+'%</strong> — '+Math.round(p/100*10)+'/10 صحيح</div>'+
+    '<div class="cbody ar">قد أكمل بنجاح متطلبات المستوى <strong>'+lv.t+'</strong><br>في برنامج تدريب الباريستا الاحترافي</div>'+
+    '<div class="cbody en" style="color:#a67b5b;font-size:.75rem;margin-top:2px">Has successfully completed the <strong>'+enT[l]+'</strong> Level<br>of the Professional Barista Training Program</div>'+
+    '<div class="clevel"><span class="lv-icon">'+lv.ic+'</span> المستوى '+lv.id+' — '+lv.t+' <span style="color:#a67b5b;font-size:.7rem">('+enT[l]+' Level)</span></div>'+
+    '<div class="cscore">'+p+'% — '+Math.round(p/100*10)+'/10 <span class="ar">صحيح</span> <span class="en" style="color:#a67b5b">| Correct</span> &nbsp;|&nbsp; '+grd+'</div>'+
     '<div class="csb"><div class="csf" style="width:'+p+'%"></div></div>'+
-    '<div class="csig"><div class="csig-box"><span class="csig-line"></span><span class="csig-label">إمضاء الخبير</span></div><div class="csig-box cstamp-box"><div class="cstamp"><div class="cstamp-in">☕<br>Esenza<br>Academy</div></div><span class="csig-label">ختم الأكاديمية</span></div></div>'+
+    '<div class="csig"><div class="csig-box"><span class="csig-line"></span><span class="csig-label">إمضاء الخبير &nbsp;•&nbsp; Examiner</span></div><div class="csig-box cstamp-box"><div class="cstamp"><div class="cstamp-in">☕<br>Esenza<br>Academy</div></div><span class="csig-label">ختم الأكاديمية &nbsp;•&nbsp; Seal</span></div></div>'+
     '<div class="cft"><span class="cdate">📅 '+ds+'</span><span class="csep">✦</span><span class="cdate">🔢 '+sn+'</span></div>'+
-    '<div class="cm"><span>🫘</span> Esenza Academy ● Certified Barista Training ● صادر عن أكاديمية إيسينزا <span>🫘</span></div>'+
+    '<div class="cm"><span>🫘</span> Esenza Academy &nbsp;•&nbsp; أكاديمية إيسينزا &nbsp;•&nbsp; Certified Barista Training &nbsp;•&nbsp; جميع الحقوق محفوظة <span>🫘</span></div>'+
     '</div></div>';
 }
 
