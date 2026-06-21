@@ -14,6 +14,12 @@ hdr p{color:#a67b5b;position:relative}
 .lang-sw button.act{background:#d4a85a;color:#1a0f0a}
 
 .c{max-width:1000px;margin:0 auto;padding:20px}
+@keyframes xp{0%{width:0%}}
+@keyframes pop{0%{transform:scale(0.8);opacity:0}50%{transform:scale(1.05)}100%{transform:scale(1);opacity:1}}
+.ds-card{animation:pop .4s ease both}
+.ds-card:nth-child(2){animation-delay:.1s}
+.ds-card:nth-child(3){animation-delay:.2s}
+.ds-card:nth-child(4){animation-delay:.3s}
 .tbs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
 .tb{padding:10px 20px;border:none;border-radius:8px;font-weight:700;cursor:pointer;background:#ede0d4;color:#6d4c41;transition:.3s;font-size:.9rem}
 .tb.act,.tb:hover{background:#d4a85a;color:#1a0f0a;transform:translateY(-1px)}
@@ -446,8 +452,36 @@ function sLsn(l,mi,li){
   let next=li<m.lessons.length-1?'<button class="btn" onclick="sLsn(\''+l+'\','+mi+','+(li+1)+')">'+__({ar:'التالي',en:'Next'})+' ➡</button>':'';
   let examLink=li===m.lessons.length-1?'<button class="btn" onclick="rT(\'e\');sExL(\''+l+'\')" style="background:#27ae60;color:white">📝 '+__({ar:'اختبر مستواك الآن',en:'Test Your Level Now'})+'</button>':'';
   let h='<div class="ls-sc"><div class="ls-h"><div class="hb" style="background-image:url('+IMG.hero[les.img||0]+')"></div><div class="hc"><div class="br">'+m.icon+' '+__(m.title)+' <span class="prg">'+__({ar:'درس',en:'Lesson'})+' '+(li+1)+' '+__({ar:'من',en:'of'})+' '+m.lessons.length+'</span></div><h2>'+__(les.title)+'</h2></div></div>'+
-    '<div class="ls-b"><div class="bk" onclick="sM(\''+l+'\')">⬅ '+__({ar:'الرجوع للموديول',en:'Back to Module'})+'</div><div class="ls-c">'+(lang==='en'&&les.body_en?les.body_en:les.body)+'</div>'+
+    '<div class="ls-b"><div class="bk" onclick="sM(\''+l+'\')">⬅ '+__({ar:'الرجوع للموديول',en:'Back to Module'})+'</div>'+
 
+    /* Learning Objectives */
+    '<div style="background:linear-gradient(135deg,#fff8e1,#fff);border-radius:12px;padding:16px 20px;margin-bottom:16px;border:1px solid #d4a85a">'+
+    '<div style="font-weight:700;color:#3e2312;margin-bottom:8px">🎯 '+__({ar:'أهداف التعلم',en:'Learning Objectives'})+'</div>'+
+    '<div style="font-size:.85rem;color:#6d4c41">'+(lang==='en'?
+    'After completing this lesson, you will be able to:<ul style="margin:8px 0 0 16px">'+
+    '<li>Understand the core concepts and principles</li>'+
+    '<li>Apply professional techniques in practice</li>'+
+    '<li>Analyze and troubleshoot common issues</li></ul>':
+    'بعد إتمام هذا الدرس، ستكون قادراً على:<ul style="margin:8px 0 0 16px">'+
+    '<li>فهم المفاهيم والمبادئ الأساسية</li>'+
+    '<li>تطبيق التقنيات الاحترافية عملياً</li>'+
+    '<li>تحليل وحل المشكلات الشائعة</li></ul>')+'</div></div>'+
+
+    '<div class="ls-c">'+(lang==='en'&&les.body_en?les.body_en:les.body)+'</div>'+
+
+    /* Pro Tips */
+    '<div style="background:linear-gradient(135deg,#1a0f0a,#3e2312);border-radius:12px;padding:16px 20px;margin-top:16px">'+
+    '<div style="color:#d4a85a;font-weight:700;margin-bottom:6px">💡 '+__({ar:'نصائح احترافية',en:'Pro Tips'})+'</div>'+
+    '<div style="color:#a67b5b;font-size:.85rem">'+(lang==='en'?
+    'Practice consistently. Keep a brew journal. Taste everything. Question everything. The best baristas are lifelong learners.':
+    'تدرب باستمرار. احتفظ بدفتر تحضير. تذوق كل شيء. اسأل عن كل شيء. أفضل الباريستا هم متعلمون مدى الحياة.')+'</div></div>'+
+
+    /* Knowledge Check */
+    '<div style="background:#e8f5e9;border-radius:12px;padding:16px 20px;margin-top:12px;border-left:4px solid #27ae60">'+
+    '<div style="font-weight:700;color:#27ae60;margin-bottom:4px">✅ '+__({ar:'المراجعة',en:'Knowledge Check'})+'</div>'+
+    '<div style="font-size:.85rem;color:#3e2312">'+(lang==='en'?
+    'Can you explain the key concept to a fellow barista? If not, review the main points above.':
+'هل تستطيع شرح المفهوم الرئيسي لزميل باريستا؟ إذا لم تستطع، راجع النقاط الرئيسية أعلاه.')+'</div></div>'+
 
     '<div class="nav-b">'+prev+next+'</div>'+(examLink?'<div class="nav-b" style="border:none;padding-top:8px">'+examLink+'</div>':'')+'</div></div>';
   $('ls').innerHTML=h;
@@ -703,9 +737,139 @@ async function aS(){
 }
 async function dS(u){try{await dA('u',u)}catch(e){}to(__({ar:'🗑️ تم حذف الطالب',en:'🗑️ Student deleted'}));lS()}
 
+/* ===== Gamification System ===== */
+const G = {
+  _key:'lucca_gamer',
+  _data:null,
+  _d(){
+    if(!this._data){
+      let r=localStorage.getItem(this._key);
+      this._data=r?JSON.parse(r):{xp:0,lv:1,streak:0,lastDate:'',hist:[],badges:[],done:{},certs:0,firstBadge:false};
+    }
+    return this._data;
+  },
+  _s(){localStorage.setItem(this._key,JSON.stringify(this._data));},
+  addXP(n){
+    let d=this._d();
+    d.xp+=n;
+    let nlv=Math.floor((-1+Math.sqrt(1+8*d.xp/1000))/2)+1;
+    if(nlv>d.lv){d.lv=nlv;to('🎉 '+__({ar:'تهانينا! وصلت للمستوى '+nlv+'!',en:'Level Up! You reached Level '+nlv+'!'}))}
+    this._s();
+  },
+  checkStreak(){
+    let d=this._d(),td=new Date().toDateString();
+    if(d.lastDate!==td){
+      let yd=new Date();yd.setDate(yd.getDate()-1);
+      if(d.lastDate===yd.toDateString()){d.streak++;if(d.streak===3||d.streak===7||d.streak===14||d.streak===30||d.streak===365)this._badge('streak_'+d.streak)}
+      else if(d.lastDate){d.streak=1}
+      else{d.streak=1}
+      d.lastDate=td;
+      if(d.streak>1)this.addXP(d.streak*10);
+      else this.addXP(10);
+    }
+    this._s();
+  },
+  completeLesson(l,mi,li){
+    let d=this._d(),k=l+'-'+mi+'-'+li;
+    if(!d.done[k]){d.done[k]=1;this.addXP(100);if(!d.firstBadge){d.firstBadge=true;this._badge('first_brew')}}
+    this._s();
+  },
+  _badge(id){
+    let d=this._d(),badges={first_brew:{ar:'☕ أول تحضير',en:'☕ First Brew'},streak_3:{ar:'🔥 3 أيام متتالية',en:'🔥 3-Day Streak'},streak_7:{ar:'🔥🔥 أسبوع',en:'🔥🔥 Weekly Warrior'},streak_14:{ar:'🔥🔥🔥 14 يوم',en:'🔥🔥🔥 Fortress'},streak_30:{ar:'🔥🔥🔥🔥 شهر',en:'🔥🔥🔥🔥 Monthly Master'},streak_365:{ar:'🏆 أسطورة سنة',en:'🏆 Yearly Immortal'},all_modules:{ar:'📚 جميع الموديولات',en:'📚 All Modules'},perfect_exam:{ar:'💯 امتحان كامل',en:'💯 Flawless Exam'}};
+    if(!d.badges.includes(id)&&badges[id]){d.badges.push(id);to('🏅 '+__({ar:'إنجاز جديد:',en:'Achievement:'})+' '+__(badges[id]));this.addXP(200)}
+  },
+  get(){return this._d();}
+};
+G.checkStreak();
+
+/* ===== Dashboard ===== */
+function sD(){
+  let g=G.get();
+  let xpTot=g.xp, lv=g.lv;
+  let xpForLv=lv*1000, xpPrev=(lv-1)*lv/2*1000;
+  let xpInLv=xpTot-xpPrev, xpNeed=xpForLv-xpPrev;
+  let pct=Math.min(100,Math.round(xpInLv/xpNeed*100))||0;
+  let totL=0,totD=0;
+  let lm=gM('A'),lb=gM('B'),lc=gM('C');
+  [...lm,...lb,...lc].forEach(m=>{m.lessons.forEach((l,i)=>{totL++;let k='A-'+lm.indexOf(m)+'-'+i;if(g.done[k])totD++;k='B-'+lb.indexOf(m)+'-'+i;if(g.done[k])totD++;k='C-'+lc.indexOf(m)+'-'+i;if(g.done[k])totD++});
+
+  let streakEm=d=>d>30?'🔥🔥🔥🔥🔥':d>14?'🔥🔥🔥🔥':d>7?'🔥🔥🔥':d>3?'🔥🔥':d>1?'🔥':'🌱';
+  let badges=[{id:'first_brew',ar:'☕ أول تحضير',en:'☕ First Brew'},{id:'streak_3',ar:'🔥 3 أيام',en:'🔥 3 Days'},{id:'streak_7',ar:'🔥🔥 أسبوع',en:'🔥🔥 Week'},{id:'streak_14',ar:'🔥🔥🔥 Fortress',en:'🔥🔥🔥 Fortress'},{id:'streak_30',ar:'🔥🔥🔥🔥 شهر',en:'🔥🔥🔥🔥 Month'}];
+
+  // Streak calendar last 7 days
+  let cal='';
+  for(let i=6;i>=0;i--){
+    let d=new Date();d.setDate(d.getDate()-i);
+    let ds=d.toDateString();
+    let active=g.hist.includes(ds)||ds===g.lastDate;
+    cal+='<div style="width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.7rem;'+(active?'background:#d4a85a;color:#1a0f0a;font-weight:700':'background:#ede0d4;color:#a67b5b')+'">'+d.getDate()+'</div>';
+  }
+
+  return '<div style="display:grid;gap:16px;grid-template-columns:1fr 1fr;margin-bottom:16px">'+
+    /* XP Card */
+    '<div style="background:linear-gradient(135deg,#1a0f0a,#3e2312);border-radius:16px;padding:24px;grid-column:1/-1;display:flex;align-items:center;gap:20px;flex-wrap:wrap">'+
+    '<div style="font-size:3rem">'+(lv>=10?'👑':lv>=7?'🔥':lv>=5?'⭐':'🌱')+'</div>'+
+    '<div style="flex:1"><div style="color:#d4a85a;font-size:.8rem">'+__({ar:'مستوى الباريستا',en:'Barista Level'})+'</div>'+
+    '<div style="color:white;font-size:2rem;font-weight:900">'+lv+'</div>'+
+    '<div style="margin-top:8px;height:6px;background:rgba(255,255,255,.1);border-radius:3px;overflow:hidden"><div style="height:100%;width:'+pct+'%;background:linear-gradient(90deg,#d4a85a,#e8cc8a);border-radius:3px;transition:width 1s"></div></div>'+
+    '<div style="color:#a67b5b;font-size:.75rem;margin-top:4px">'+xpInLv+' / '+xpNeed+' XP — '+__({ar:'المستوى القادم',en:'Next Level'})+'</div></div>'+
+    /* XP total + lessons */
+    '<div style="display:flex;gap:16px;flex-wrap:wrap">'+
+    '<div style="text-align:center;padding:8px 16px;background:rgba(255,255,255,.05);border-radius:12px"><div style="color:#d4a85a;font-size:1.3rem;font-weight:900">'+xpTot+'</div><div style="color:#a67b5b;font-size:.7rem">XP</div></div>'+
+    '<div style="text-align:center;padding:8px 16px;background:rgba(255,255,255,.05);border-radius:12px"><div style="color:white;font-size:1.3rem;font-weight:900">'+totD+'/'+totL+'</div><div style="color:#a67b5b;font-size:.7rem">'+__({ar:'دروس',en:'Lessons'})+'</div></div>'+
+    '</div></div>'+
+
+    /* Streak */
+    '<div style="background:white;border-radius:16px;padding:20px;border:2px solid #ede0d4">'+
+    '<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><span style="font-size:1.5rem">'+streakEm(g.streak)+'</span><span style="font-weight:700;color:#3e2312;font-size:1.1rem">'+g.streak+' '+__({ar:'يوم',en:'Day Streak'})+'</span></div>'+
+    '<div style="display:flex;gap:4px">'+cal+'</div>'+
+    '</div>'+
+
+    /* Badges */
+    '<div style="background:white;border-radius:16px;padding:20px;border:2px solid #ede0d4">'+
+    '<div style="font-weight:700;color:#3e2312;margin-bottom:12px;font-size:.9rem">🏅 '+__({ar:'الإنجازات',en:'Achievements'})+'</div>'+
+    '<div style="display:flex;flex-wrap:wrap;gap:8px">'+
+    (g.badges.length?g.badges.map(b=>{
+      let bd=badges.find(x=>x.id===b.split('_')[0]);
+      return '<span style="padding:4px 12px;background:#fff8e1;border:1px solid #d4a85a;border-radius:20px;font-size:.8rem;color:#3e2312">'+(lang==='en'?bd?.en:bd?.ar||b)+'</span>'
+    }).join(''):'<span style="color:#a67b5b;font-size:.8rem">'+__({ar:'💪 أكمل أول درس لتحصل على أول شارة',en:'💪 Complete your first lesson to earn your first badge'})+'</span>')+
+    '</div></div>'+
+
+    /* Quick Stats */
+    '<div style="background:white;border-radius:16px;padding:20px;border:2px solid #ede0d4;grid-column:1/-1">'+
+    '<div style="font-weight:700;color:#3e2312;margin-bottom:12px">📊 '+__({ar:'إحصائياتك',en:'Your Stats'})+'</div>'+
+    '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px">'+
+    '<div style="text-align:center;padding:12px;background:#faf5ef;border-radius:12px"><div style="font-size:1.5rem;font-weight:900;color:#3e2312">'+g.certs+'</div><div style="font-size:.75rem;color:#a67b5b">'+__({ar:'شهادات',en:'Certificates'})+'</div></div>'+
+    '<div style="text-align:center;padding:12px;background:#faf5ef;border-radius:12px"><div style="font-size:1.5rem;font-weight:900;color:#3e2312">'+g.badges.length+'</div><div style="font-size:.75rem;color:#a67b5b">'+__({ar:'شارات',en:'Badges'})+'</div></div>'+
+    '<div style="text-align:center;padding:12px;background:#faf5ef;border-radius:12px"><div style="font-size:1.5rem;font-weight:900;color:#3e2312">'+Object.keys(g.done).length+'</div><div style="font-size:.75rem;color:#a67b5b">'+__({ar:'دروس مكتملة',en:'Completed'})+'</div></div>'+
+    '</div></div>'+
+    '</div>';
+}
+
+/* ===== Override rT to add Dashboard tab ===== */
+const _rT=rT;
+rT=function(t){
+  let r=$('root');
+  r.innerHTML='<div class="tbs"><button class="tb'+(t==='d'?' act':'')+'" onclick="rT(\'d\')">🏠 '+__({ar:'الرئيسية',en:'Home'})+'</button><button class="tb'+(t==='c'?' act':'')+'" onclick="rT(\'c\')">📚 '+__({ar:'المنهج',en:'Curriculum'})+'</button><button class="tb'+(t==='e'?' act':'')+'" onclick="rT(\'e\')">📝 '+__({ar:'الاختبار',en:'Exam'})+'</button><button class="tb'+(t==='k'?' act':'')+'" onclick="rT(\'k\')">🧮 '+__({ar:'الحاسبة',en:'Calculator'})+'</button><button class="tb'+(t==='v'?' act':'')+'" onclick="rT(\'v\')">🖨️ '+__({ar:'الشهادات',en:'Certificates'})+'</button><button class="tb'+(t==='a'?' act':'')+'" onclick="rT(\'a\')">🔐 '+__({ar:'الطلاب',en:'Students'})+'</button></div>';
+  if(t==='d') r.innerHTML+=sD();
+  else if(t==='c') r.innerHTML+=sL();
+  else if(t==='e') r.innerHTML+=sEx();
+  else if(t==='k') r.innerHTML+=sCalc();
+  else if(t==='v'){r.innerHTML+=sV();lC();}
+  else r.innerHTML+=sA();
+  if(t==='a') lS();
+};
+
+/* ===== Override sLsn to award XP ===== */
+const _sLsn=sLsn;
+sLsn=function(l,mi,li){
+  G.completeLesson(l,mi,li);
+  _sLsn(l,mi,li);
+};
+
 let bl=navigator.language||navigator.userLanguage||'en';
 if(bl.startsWith('ar'))setLang('ar');
-else rT('c');
+else rT('d');
 </script>
 </body>
 </html>
